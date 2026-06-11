@@ -1,0 +1,556 @@
+{
+  "locations": [
+    {
+      "id": "foosha-village",
+      "name": "Foosha Village",
+      "saga": "East Blue",
+      "arc": "Romance Dawn Arc",
+      "order": 1,
+      "x": 10.5,
+      "y": 53.8,
+      "region": "East Blue",
+      "description": "The tiny harbor village on Dawn Island where Luffy's story begins. Here, a young boy ate a cursed Devil Fruit and watched a red-haired pirate sacrifice his arm to save him — vowing one day to surpass even the great Shanks.",
+      "keyEvents": [
+        "Luffy eats the Gomu Gomu no Mi (Gum-Gum Fruit)",
+        "Shanks loses his arm saving Luffy from the Lord of the Coast",
+        "Luffy swears to become King of the Pirates"
+      ],
+      "crewPresent": ["Luffy"],
+      "emoji": "🏡"
+    },
+    {
+      "id": "shells-town",
+      "name": "Shells Town",
+      "saga": "East Blue",
+      "arc": "Romance Dawn Arc",
+      "order": 2,
+      "x": 14.0,
+      "y": 48.5,
+      "region": "East Blue",
+      "description": "A fortified Marine town ruled by the cruel Captain Morgan. Roronoa Zoro, the pirate hunter, is held prisoner here — until a straw-hatted boy shows up and tears the Marine base apart to free him.",
+      "keyEvents": [
+        "Luffy rescues Roronoa Zoro from execution",
+        "Zoro joins the crew as the first Straw Hat",
+        "Defeat of Captain 'Axe-Hand' Morgan"
+      ],
+      "crewPresent": ["Luffy", "Zoro"],
+      "emoji": "⚓"
+    },
+    {
+      "id": "orange-town",
+      "name": "Orange Town",
+      "saga": "East Blue",
+      "arc": "Orange Town Arc",
+      "order": 3,
+      "x": 17.5,
+      "y": 61.0,
+      "region": "East Blue",
+      "description": "A town terrorized by Buggy the Clown and his pirate crew. The Chop-Chop Devil Fruit user and former Roger Pirate proves a surprisingly dangerous foe — until Luffy sends him flying, and a certain thief joins the party.",
+      "keyEvents": [
+        "First encounter with Buggy the Clown",
+        "Nami joins the crew (temporarily) as navigator",
+        "Luffy defeats Buggy with Buggy's own hands"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami"],
+      "emoji": "🎪"
+    },
+    {
+      "id": "syrup-village",
+      "name": "Syrup Village",
+      "saga": "East Blue",
+      "arc": "Syrup Village Arc",
+      "order": 4,
+      "x": 12.0,
+      "y": 67.0,
+      "region": "East Blue",
+      "description": "A quiet coastal village hiding a dark conspiracy. Usopp, the village's resident liar and storyteller, discovers that the local nobleman Klahadore is actually the deadly pirate Captain Kuro.",
+      "keyEvents": [
+        "Usopp joins the crew as sniper",
+        "Defeat of Captain Kuro and the Black Cat Pirates",
+        "The crew acquires the Going Merry"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp"],
+      "emoji": "🏴‍☠️"
+    },
+    {
+      "id": "baratie",
+      "name": "Baratie",
+      "saga": "East Blue",
+      "arc": "Baratie Arc",
+      "order": 5,
+      "x": 21.5,
+      "y": 52.0,
+      "region": "East Blue",
+      "description": "A grand floating restaurant navigated across the seas by chefs with iron fists. Here Luffy meets the chivalrous cook Sanji — and witnesses Zoro's devastating defeat at the hands of Hawk-Eyes Mihawk, igniting a lifelong vow.",
+      "keyEvents": [
+        "Sanji joins the crew as cook",
+        "Mihawk defeats Zoro — Zoro swears to never lose again",
+        "Don Krieg's siege of the Baratie is repelled"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "🍖"
+    },
+    {
+      "id": "arlong-park",
+      "name": "Arlong Park",
+      "saga": "East Blue",
+      "arc": "Arlong Park Arc",
+      "order": 6,
+      "x": 8.5,
+      "y": 72.0,
+      "region": "East Blue",
+      "description": "The stronghold of Arlong the Saw, a Fishman pirate who has enslaved Nami's village for a decade. In one of One Piece's most emotionally powerful moments, Luffy destroys the tower that imprisoned Nami — and the tears finally fall.",
+      "keyEvents": [
+        "Nami's tragic past revealed — 8 years enslaved by Arlong",
+        "Luffy destroys Arlong Park — 'Nami is MY nakama!'",
+        "Nami officially joins the crew"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "🦈"
+    },
+    {
+      "id": "loguetown",
+      "name": "Loguetown",
+      "saga": "East Blue",
+      "arc": "Loguetown Arc",
+      "order": 7,
+      "x": 24.5,
+      "y": 48.0,
+      "region": "East Blue",
+      "description": "The Town of the Beginning and the End — birthplace and execution site of the Pirate King Gol D. Roger. Luffy stands on the very scaffold where Roger was executed, laughing as lightning strikes down Buggy's blade in a bolt of fate.",
+      "keyEvents": [
+        "Luffy reaches the scaffold where Roger was executed",
+        "Lightning saves Luffy from Buggy at the last second",
+        "Captain Smoker first encounters Luffy",
+        "The crew departs for the Grand Line"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "⚡"
+    },
+    {
+      "id": "reverse-mountain",
+      "name": "Reverse Mountain",
+      "saga": "Alabasta",
+      "arc": "Reverse Mountain Arc",
+      "order": 8,
+      "x": 27.0,
+      "y": 47.0,
+      "region": "Paradise",
+      "description": "The only conventional gateway to the Grand Line — a mountain where seawater flows upward and ships are launched through the peak into the chaos beyond. Here the crew meets the enormous whale Laboon, who waits for friends that may never return.",
+      "keyEvents": [
+        "The Straw Hats enter the Grand Line",
+        "Encounter with the whale Laboon — Brook's first hint",
+        "Miss Wednesday and Mr. 9 (Baroque Works agents) appear"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "🏔️"
+    },
+    {
+      "id": "whiskey-peak",
+      "name": "Whiskey Peak",
+      "saga": "Alabasta",
+      "arc": "Whiskey Peak Arc",
+      "order": 9,
+      "x": 31.5,
+      "y": 43.5,
+      "region": "Paradise",
+      "description": "A seemingly welcoming island where the locals celebrate arriving pirates with endless food and drink — because they're actually Baroque Works bounty hunters waiting for them to pass out. The hospitality is a trap.",
+      "keyEvents": [
+        "Baroque Works trap revealed",
+        "Zoro defeats 100 bounty hunters solo",
+        "Vivi (Princess of Alabasta) reveals herself"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "🍺"
+    },
+    {
+      "id": "little-garden",
+      "name": "Little Garden",
+      "saga": "Alabasta",
+      "arc": "Little Garden Arc",
+      "order": 10,
+      "x": 35.5,
+      "y": 51.5,
+      "region": "Paradise",
+      "description": "A prehistoric island trapped in the Jurassic era — dinosaurs roam freely and two giants, Dorry and Broggy, have been fighting their eternal duel for over 100 years. Baroque Works agents attempt to end their battle with treachery.",
+      "keyEvents": [
+        "Giants Dorry and Broggy's 100-year duel",
+        "Baroque Works agents Mr. 3 and Miss Goldenweek defeated",
+        "Nami contracts a mysterious illness"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji"],
+      "emoji": "🦕"
+    },
+    {
+      "id": "drum-island",
+      "name": "Drum Island",
+      "saga": "Alabasta",
+      "arc": "Drum Island Arc",
+      "order": 11,
+      "x": 39.0,
+      "y": 57.0,
+      "region": "Paradise",
+      "description": "A perpetually snow-covered island with a sole doctor — Dr. Kureha, who trained the reindeer Tony Tony Chopper. In an iconic scene, Luffy and Sanji scale the Drum Rockies in a blizzard, carrying their sick crewmates on their backs.",
+      "keyEvents": [
+        "Tony Tony Chopper joins the crew as doctor",
+        "Luffy carries Nami and Sanji up the Drum Rockies",
+        "Wapol the Bragman defeated"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper"],
+      "emoji": "❄️"
+    },
+    {
+      "id": "alabasta",
+      "name": "Alabasta",
+      "saga": "Alabasta",
+      "arc": "Alabasta Arc",
+      "order": 12,
+      "x": 43.0,
+      "y": 41.5,
+      "region": "Paradise",
+      "description": "A vast desert kingdom on the brink of civil war, secretly engineered by Warlord Crocodile of Baroque Works. In the rain-soaked finale, Luffy defeats Crocodile with blood and salt — his first victory over a Warlord of the Sea.",
+      "keyEvents": [
+        "Crocodile defeated — Luffy's first Warlord victory",
+        "Vivi's tearful farewell — 'We are forever your nakama!'",
+        "Nico Robin (Miss All Sunday) joins the crew"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin"],
+      "emoji": "🏜️"
+    },
+    {
+      "id": "jaya",
+      "name": "Jaya",
+      "saga": "Skypiea",
+      "arc": "Jaya Arc",
+      "order": 13,
+      "x": 46.5,
+      "y": 56.0,
+      "region": "Paradise",
+      "description": "A pirate-infested port island ruled by the terrifying Bellamy. In a ruined bar, Luffy meets a man named Teach — not yet known as Blackbeard — and refuses to fight a fool who mocks his dream. The crew also finds the sky island map.",
+      "keyEvents": [
+        "First encounter with Marshall D. Teach (Blackbeard)",
+        "Bellamy the Hyena mocks dreams — Luffy refuses to fight back",
+        "Sky island map discovered — the voyage to Skypiea begins"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin"],
+      "emoji": "🗺️"
+    },
+    {
+      "id": "skypiea",
+      "name": "Skypiea",
+      "saga": "Skypiea",
+      "arc": "Skypiea Arc",
+      "order": 14,
+      "x": 46.5,
+      "y": 14.0,
+      "region": "Sky",
+      "description": "A miraculous island in the clouds, 10,000 meters above the sea. Luffy and crew are hunted as criminals in this divine land ruled by the self-proclaimed god Enel. Here lie the Poneglyphs, the golden city of Shandora, and ancient secrets of the world.",
+      "keyEvents": [
+        "Luffy defeats the 'god' Enel with Gum-Gum immunity to lightning",
+        "First Poneglyph discovered — key to the ancient history",
+        "The golden bell of Shandora rings after 400 years of silence"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin"],
+      "emoji": "☁️"
+    },
+    {
+      "id": "long-ring-long-land",
+      "name": "Long Ring Long Land",
+      "saga": "Water 7",
+      "arc": "Long Ring Long Land Arc",
+      "order": 15,
+      "x": 50.5,
+      "y": 50.5,
+      "region": "Paradise",
+      "description": "A strange ring-shaped archipelago where every animal is stretched and elongated by the unusual terrain. The Straw Hats must compete in the Davy Back Fight against the Foxy Pirates — a series of pirate games with nakama as the ultimate prize.",
+      "keyEvents": [
+        "Davy Back Fight against Foxy the Silver Fox",
+        "Chopper and Robin temporarily stolen and won back",
+        "Admiral Aokiji (Kuzan) first appears and defeats the crew"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin"],
+      "emoji": "🦊"
+    },
+    {
+      "id": "water-7",
+      "name": "Water 7",
+      "saga": "Water 7",
+      "arc": "Water 7 Arc",
+      "order": 16,
+      "x": 53.5,
+      "y": 43.5,
+      "region": "Paradise",
+      "description": "The City of Water — a Venice-like metropolis of canals and the finest shipwrights in the world. The Going Merry is condemned to death, Robin vanishes, and the crew is shattered from within before they discover the truth beneath the sorrow.",
+      "keyEvents": [
+        "Going Merry declared unseaworthy — the crew is torn apart",
+        "Robin's disappearance — she says 'I want to die'",
+        "CP9 revealed — Lucci, Kaku, and the cipher pol agents"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin"],
+      "emoji": "🌊"
+    },
+    {
+      "id": "enies-lobby",
+      "name": "Enies Lobby",
+      "saga": "Water 7",
+      "arc": "Enies Lobby Arc",
+      "order": 17,
+      "x": 55.5,
+      "y": 48.0,
+      "region": "Paradise",
+      "description": "The 'Island of Justice' — a World Government fortress where criminals are brought to await erasure from history. The Straw Hats declare war on the World Government itself, and Robin's heartbreaking cry shakes the heavens: 'I WANT TO LIVE!'",
+      "keyEvents": [
+        "Robin rescued — 'I want to live!' brings the crew to tears",
+        "Luffy defeats Rob Lucci — hardest fight of East Blue / Paradise era",
+        "The Straw Hats burn the World Government flag — wanted posters soar",
+        "Going Merry's emotional final voyage and funeral"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky"],
+      "emoji": "🏛️"
+    },
+    {
+      "id": "thriller-bark",
+      "name": "Thriller Bark",
+      "saga": "Water 7",
+      "arc": "Thriller Bark Arc",
+      "order": 18,
+      "x": 59.5,
+      "y": 54.5,
+      "region": "Paradise",
+      "description": "A massive ghost ship the size of an island, sailing through the Florian Triangle in eternal fog. Warlord Gecko Moria rules this haunted realm, stealing shadows from the living. And here, a skeleton musician finally has a chance to live again.",
+      "keyEvents": [
+        "Brook joins the crew as musician — skeleton swordsman",
+        "Zoro's legendary sacrifice: absorbs all of Luffy's pain from Kuma",
+        "Warlord Gecko Moria defeated"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "💀"
+    },
+    {
+      "id": "sabaody-archipelago",
+      "name": "Sabaody Archipelago",
+      "saga": "Summit War",
+      "arc": "Sabaody Archipelago Arc",
+      "order": 19,
+      "x": 64.5,
+      "y": 47.0,
+      "region": "Paradise",
+      "description": "A mangrove forest of bubble-producing trees at the base of the Red Line — the last stop before the New World. Here the Straw Hats are utterly crushed, scattered by Bartholomew Kuma to different corners of the world in their most devastating defeat.",
+      "keyEvents": [
+        "Luffy punches a World Noble (Celestial Dragon) — the Marines mobilize",
+        "Admiral Kizaru defeats the crew with ease",
+        "Kuma scatters the entire Straw Hat crew to the ends of the earth",
+        "The crew separated for 2 years"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🫧"
+    },
+    {
+      "id": "amazon-lily",
+      "name": "Amazon Lily",
+      "saga": "Summit War",
+      "arc": "Amazon Lily Arc",
+      "order": 20,
+      "x": 58.5,
+      "y": 74.0,
+      "region": "Calm Belt",
+      "description": "A hidden island in the Calm Belt, home to the fearsome Kuja tribe — a nation of warrior women. Luffy crash-lands here after being scattered, where Boa Hancock and her sisters see his scars and his iron will for the first time.",
+      "keyEvents": [
+        "Luffy meets Warlord Boa Hancock — she falls in love",
+        "Luffy learns Ace is to be publicly executed at Marineford",
+        "Hancock smuggles Luffy to Impel Down"
+      ],
+      "crewPresent": ["Luffy"],
+      "emoji": "🐍"
+    },
+    {
+      "id": "impel-down",
+      "name": "Impel Down",
+      "saga": "Summit War",
+      "arc": "Impel Down Arc",
+      "order": 21,
+      "x": 63.5,
+      "y": 79.0,
+      "region": "Calm Belt",
+      "description": "The world's most impenetrable prison, built underwater in the Calm Belt. Six levels of escalating hell, guarded by the fearsome Warden Magellan. Luffy tears through all of it — poisoned, broken, and barely alive — to rescue his brother Ace.",
+      "keyEvents": [
+        "Luffy infiltrates all 6 levels solo — nearly dies from Magellan's poison",
+        "Ivankov cures Luffy with hormones at the cost of 10 years of life",
+        "Luffy fails — Ace has already been transferred to Marineford",
+        "Luffy leads a mass prison break instead"
+      ],
+      "crewPresent": ["Luffy"],
+      "emoji": "⛓️"
+    },
+    {
+      "id": "marineford",
+      "name": "Marineford",
+      "saga": "Summit War",
+      "arc": "Marineford Arc",
+      "order": 22,
+      "x": 67.5,
+      "y": 35.5,
+      "region": "Paradise",
+      "description": "The Marine Headquarters — the seat of world power. The Summit War of Marineford is the most catastrophic event in One Piece history. In the end, not all nakama can be saved — and Luffy shatters, screaming in the ruins.",
+      "keyEvents": [
+        "Whitebeard declares war on the World Government",
+        "Ace is freed — and immediately killed shielding Luffy from Akainu",
+        "Whitebeard dies standing — 'One Piece is real!'",
+        "Luffy collapses; the world of pirates is forever changed"
+      ],
+      "crewPresent": ["Luffy"],
+      "emoji": "⚔️"
+    },
+    {
+      "id": "rusukaina",
+      "name": "Rusukaina",
+      "saga": "Fishman Island",
+      "arc": "Post-War Arc",
+      "order": 23,
+      "x": 60.5,
+      "y": 69.0,
+      "region": "Calm Belt",
+      "description": "A treacherous island in the Calm Belt where 500 species of animals stronger than Luffy roam freely. Here, under the tutelage of Dark King Silvers Rayleigh, Luffy spends two and a half years mastering Haki — preparing for the New World.",
+      "keyEvents": [
+        "Luffy trains with Rayleigh — masters all three forms of Haki",
+        "Luffy sends a coded message: meet at Sabaody in 2 years",
+        "Boa Hancock protects the island and keeps his secret"
+      ],
+      "crewPresent": ["Luffy"],
+      "emoji": "🏋️"
+    },
+    {
+      "id": "fishman-island",
+      "name": "Fishman Island",
+      "saga": "Fishman Island",
+      "arc": "Fishman Island Arc",
+      "order": 24,
+      "x": 73.5,
+      "y": 47.5,
+      "region": "Deep Sea",
+      "description": "An underwater kingdom 10,000 meters below the surface, nestled at the base of the Red Line. Home to Fishmen and Merfolk, torn apart by racial hatred. The Straw Hats reunite here for the first time in two years — and defeat the New Fishman Pirates.",
+      "keyEvents": [
+        "The Straw Hat crew reunites after 2 years apart",
+        "Hody Jones and the New Fishman Pirates defeated",
+        "Luffy's New World bounty soars — 400 million berries",
+        "Neptune pledges the Road Poneglyph to Luffy"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🐠"
+    },
+    {
+      "id": "punk-hazard",
+      "name": "Punk Hazard",
+      "saga": "New World",
+      "arc": "Punk Hazard Arc",
+      "order": 25,
+      "x": 78.5,
+      "y": 44.5,
+      "region": "New World",
+      "description": "The first New World island — a hellscape split in two: half frozen in eternal ice, half scorched by volcanic flame, the result of a battle between Akainu and Aokiji four years prior. Caesar Clown's monstrous experiments run here in the shadows.",
+      "keyEvents": [
+        "The Straw Hats' first New World island",
+        "Alliance formed with Trafalgar Law",
+        "Caesar Clown — mad scientist — captured and subdued",
+        "Momonosuke of Wano first appears"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🌋"
+    },
+    {
+      "id": "dressrosa",
+      "name": "Dressrosa",
+      "saga": "New World",
+      "arc": "Dressrosa Arc",
+      "order": 26,
+      "x": 82.5,
+      "y": 53.5,
+      "region": "New World",
+      "description": "A vivid kingdom of passion and color — flamenco, corrida, toys that were once humans. Warlord Donquixote Doflamingo's tyranny runs ten years deep. Luffy awakens Gear Fourth for the first time and defeats the most powerful Warlord in the seas.",
+      "keyEvents": [
+        "Luffy activates Gear Fourth — Boundman — for the first time",
+        "Doflamingo defeated — the Birdcage falls",
+        "The Mera Mera no Mi (Ace's fruit) appears and is destroyed",
+        "The Grand Fleet forms — 5,000 warriors swear loyalty to Luffy"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🌹"
+    },
+    {
+      "id": "zou",
+      "name": "Zou",
+      "saga": "New World",
+      "arc": "Zou Arc",
+      "order": 27,
+      "x": 80.5,
+      "y": 61.0,
+      "region": "New World",
+      "description": "An island that is also a living creature — Zunesha, a colossal elephant wandering the seas for centuries. Home to the Mink Tribe, Zou holds a Road Poneglyph and the truth of the Kozuki clan. The path to Wano begins here.",
+      "keyEvents": [
+        "Zou revealed as an island on the back of the elephant Zunesha",
+        "Road Poneglyph discovered — one of four keys to Laugh Tale",
+        "Ninja-Pirate-Mink-Samurai Alliance formed",
+        "Sanji taken by Big Mom's family — crew separates again"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🐘"
+    },
+    {
+      "id": "whole-cake-island",
+      "name": "Whole Cake Island",
+      "saga": "New World",
+      "arc": "Whole Cake Island Arc",
+      "order": 28,
+      "x": 75.0,
+      "y": 57.0,
+      "region": "New World",
+      "description": "The central island of Big Mom's 35-island archipelago — a surreal land of food and confectionery where everything is alive. Luffy's team infiltrates to rescue Sanji from a political marriage, navigating one of the most perilous Yonko territories.",
+      "keyEvents": [
+        "Luffy infiltrates Big Mom's domain to rescue Sanji",
+        "Sanji's true origin revealed — Vinsmoke family and Germa 66",
+        "Big Mom's Poneglyph rubbings obtained",
+        "Escape through mirror world — Big Mom in pursuit"
+      ],
+      "crewPresent": ["Luffy", "Nami", "Chopper", "Brook", "Carrot"],
+      "emoji": "🎂"
+    },
+    {
+      "id": "wano",
+      "name": "Wano Country",
+      "saga": "New World",
+      "arc": "Wano Country Arc",
+      "order": 29,
+      "x": 87.5,
+      "y": 43.0,
+      "region": "New World",
+      "description": "An isolated, closed country with the soul of ancient Japan — samurai, shogunate, and haiku under Kaido's iron rule. The Alliance's greatest battle culminates on the Skull Dome of Onigashima. Here, the drums of liberation echo across creation.",
+      "keyEvents": [
+        "Kaido defeated — Luffy awakens Gear Fifth and the power of Nika",
+        "Yamato, Momonosuke, and the samurai liberate Wano",
+        "Big Mom and Kaido — two Yonko fall in one night",
+        "Luffy's true Devil Fruit revealed: Hito Hito no Mi, Model: Nika"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "⛩️"
+    },
+    {
+      "id": "egghead-island",
+      "name": "Egghead Island",
+      "saga": "New World",
+      "arc": "Egghead Arc",
+      "order": 30,
+      "x": 84.5,
+      "y": 35.5,
+      "region": "New World",
+      "description": "The Island of the Future — Dr. Vegapunk's research facility, 500 years ahead of the rest of the world. The secrets of the Void Century begin to surface here, and the World Government's most desperate manhunt is unleashed. The Final Saga begins.",
+      "keyEvents": [
+        "Dr. Vegapunk and his satellites encountered",
+        "Void Century revelations: the truth of the Poneglyphs and the Ancient Kingdom",
+        "Five Elders descend on the island — global broadcast initiated",
+        "Luffy's bounty reaches 3 billion berries"
+      ],
+      "crewPresent": ["Luffy", "Zoro", "Nami", "Usopp", "Sanji", "Chopper", "Robin", "Franky", "Brook"],
+      "emoji": "🤖"
+    }
+  ]
+}
