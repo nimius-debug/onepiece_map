@@ -4,24 +4,28 @@ export const useMapState = () => {
   const [activeSaga, setActiveSaga]           = useState(null)
   const [hoveredLocation, setHoveredLocation] = useState(null)
   const [pinnedLocation, setPinnedLocation]   = useState(null)
+  const [tooltipPos, setTooltipPos]           = useState({ x: -9999, y: -9999 })
 
-  const handleHover = useCallback((location) => {
-    if (!pinnedLocation) setHoveredLocation(location)
+  const handleHover = useCallback((location, pos) => {
+    if (!pinnedLocation) {
+      setHoveredLocation(location)
+      if (pos) setTooltipPos(pos)
+    }
   }, [pinnedLocation])
 
   const handleLeave = useCallback(() => {
     if (!pinnedLocation) setHoveredLocation(null)
   }, [pinnedLocation])
 
-  const handleClick = useCallback((location) => {
-    setPinnedLocation((prev) =>
-      prev?.id === location.id ? null : location
-    )
+  const handleClick = useCallback((location, pos) => {
+    if (pos) setTooltipPos(pos)
+    setPinnedLocation((prev) => prev?.id === location.id ? null : location)
     setHoveredLocation(null)
   }, [])
 
   const handleClosePin = useCallback(() => {
     setPinnedLocation(null)
+    setHoveredLocation(null)
   }, [])
 
   const handleSetActiveSaga = useCallback((saga) => {
@@ -38,6 +42,7 @@ export const useMapState = () => {
     hoveredLocation,
     pinnedLocation,
     visibleLocation,
+    tooltipPos,
     onHover: handleHover,
     onLeave: handleLeave,
     onClick: handleClick,

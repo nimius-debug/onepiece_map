@@ -150,8 +150,8 @@ html, body {
 
 /* ── Tooltip ───────────────────────────────────────────────── */
 .tooltip-card {
-  position: absolute;
-  z-index: 100;
+  position: fixed;
+  z-index: 200;
   min-width: 260px;
   max-width: 320px;
   background: linear-gradient(135deg, rgba(10,21,53,0.98), rgba(5,10,30,0.98));
