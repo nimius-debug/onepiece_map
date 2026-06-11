@@ -43,11 +43,11 @@ const Header = ({ activeSaga, activeLocation, totalCount }) => (
     </div>
 
     {/* Divider */}
-    <div style={{ width: 1, height: 28, background: 'var(--border-dim)' }} />
+    <div className="hide-mobile" style={{ width: 1, height: 28, background: 'var(--border-dim)' }} />
 
     {/* Active saga indicator */}
     {activeSaga ? (
-      <div style={{
+      <div className="hide-mobile" style={{
         display: 'flex',
         alignItems: 'center',
         gap: 6,
@@ -59,7 +59,7 @@ const Header = ({ activeSaga, activeLocation, totalCount }) => (
         <span style={{ color: 'var(--gold)', fontWeight: 600 }}>{activeSaga}</span>
       </div>
     ) : (
-      <div style={{
+      <div className="hide-mobile" style={{
         fontSize: 11,
         color: 'var(--text-muted)',
         fontFamily: 'Cinzel, serif',
@@ -72,8 +72,8 @@ const Header = ({ activeSaga, activeLocation, totalCount }) => (
     {/* Active location breadcrumb */}
     {activeLocation && (
       <>
-        <div style={{ width: 1, height: 20, background: 'var(--border-dim)', opacity: 0.5 }} />
-        <div style={{
+        <div className="hide-mobile" style={{ width: 1, height: 20, background: 'var(--border-dim)', opacity: 0.5 }} />
+        <div className="hide-mobile" style={{
           display: 'flex',
           alignItems: 'center',
           gap: 6,
@@ -93,7 +93,7 @@ const Header = ({ activeSaga, activeLocation, totalCount }) => (
     <div style={{ flex: 1 }} />
 
     {/* World indicator */}
-    <div style={{
+    <div className="hide-mobile" style={{
       display: 'flex',
       alignItems: 'center',
       gap: 10,

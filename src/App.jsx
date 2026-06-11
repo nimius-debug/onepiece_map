@@ -4,6 +4,7 @@ import WorldMapSVG from './components/WorldMapSVG'
 import LocationMarker from './components/LocationMarker'
 import TooltipCard from './components/TooltipCard'
 import SagaFilterPanel from './components/SagaFilterPanel'
+import SagaPills from './components/SagaPills'
 import JourneyPath from './components/JourneyPath'
 import Header from './components/Header'
 import { useMapState } from './hooks/useMapState'
@@ -53,8 +54,14 @@ const App = () => {
         totalCount={ALL_LOCATIONS.length}
       />
 
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="app-body">
         <SagaFilterPanel
+          activeSaga={activeSaga}
+          setActiveSaga={setActiveSaga}
+          locationCounts={locationCounts}
+          totalCount={ALL_LOCATIONS.length}
+        />
+        <SagaPills
           activeSaga={activeSaga}
           setActiveSaga={setActiveSaga}
           locationCounts={locationCounts}
