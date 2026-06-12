@@ -1,672 +1,672 @@
 import { MAP_W, MAP_H, RL1_X, RL2_X, GL_Y, CALM_N, CALM_S } from '../constants/mapConfig'
 
-const WorldMapSVG = () => (
-  <svg
-    viewBox={`0 0 ${MAP_W} ${MAP_H}`}
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ width: '100%', height: '100%', display: 'block', position: 'absolute', inset: 0 }}
-    preserveAspectRatio="none"
-  >
-    <defs>
-      {/* Deep sea gradient — dark with warm amber undercurrent for aged feel */}
-      <radialGradient id="oceanDeep" cx="48%" cy="50%" r="78%">
-        <stop offset="0%"   stopColor="#0d1d42" />
-        <stop offset="45%"  stopColor="#080f28" />
-        <stop offset="100%" stopColor="#030710" />
-      </radialGradient>
+/* ─── Color tokens ─────────────────────────────────────────── */
+const C = {
+  parch:    '#C8A86A',   // land / parchment
+  parchHi:  '#DDB878',   // land highlight
+  parchSh:  '#A88848',   // land shadow
+  ocean:    '#2AAEC8',   // open sea teal
+  calm:     '#1A8AA8',   // calm belt (slightly darker)
+  grand:    '#126888',   // Grand Line (same as calm visually; handled by line)
+  rl:       '#5C180A',   // Red Line base
+  rlHi:     '#8C3014',   // Red Line highlight peak
+  paper:    '#E8D0A0',   // outer frame/paper
+  label:    '#1A0C04',   // dark brown labels
+  labelSub: '#2A1A0A',   // medium labels
+  border:   '#7A4818',   // frame border
+  gold:     '#C07810',   // accent gold
+}
 
-      {/* Parchment aging tint */}
-      <radialGradient id="agingTint" cx="50%" cy="50%" r="70%">
-        <stop offset="0%"   stopColor="rgba(110,75,15,0.12)" />
-        <stop offset="100%" stopColor="rgba(40,20,5,0.06)"  />
-      </radialGradient>
+/* ─── Helpers ──────────────────────────────────────────────── */
+const px = (x, y) => `${x},${y}`
 
-      {/* Red Line mountain gradient */}
-      <linearGradient id="rlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%"   stopColor="#1a0400" />
-        <stop offset="25%"  stopColor="#6b1e06" />
-        <stop offset="50%"  stopColor="#8c2a0a" />
-        <stop offset="75%"  stopColor="#6b1e06" />
-        <stop offset="100%" stopColor="#1a0400" />
-      </linearGradient>
+export default function WorldMapSVG() {
+  return (
+    <svg
+      viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: '100%', height: '100%', display: 'block', position: 'absolute', inset: 0 }}
+      preserveAspectRatio="none"
+    >
+      <defs>
+        {/* Paper texture for outer border area */}
+        <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stopColor="#EED8A8" />
+          <stop offset="100%" stopColor="#D4B878" />
+        </linearGradient>
 
-      {/* Grand Line mystical band */}
-      <linearGradient id="glGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%"   stopColor="rgba(8,35,100,0)"    />
-        <stop offset="6%"   stopColor="rgba(20,60,160,0.6)" />
-        <stop offset="94%"  stopColor="rgba(20,60,160,0.6)" />
-        <stop offset="100%" stopColor="rgba(8,35,100,0)"    />
-      </linearGradient>
+        {/* Land parchment gradient — slightly textured */}
+        <radialGradient id="landGrad" cx="40%" cy="35%" r="75%">
+          <stop offset="0%"   stopColor="#D4B070" />
+          <stop offset="100%" stopColor="#A88040" />
+        </radialGradient>
 
-      {/* Sky zone gradient */}
-      <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%"   stopColor="rgba(32,18,65,0.48)" />
-        <stop offset="100%" stopColor="rgba(32,18,65,0)"    />
-      </linearGradient>
+        {/* Ocean teal gradient */}
+        <radialGradient id="oceanGrad" cx="50%" cy="48%" r="72%">
+          <stop offset="0%"   stopColor="#2EC0D8" />
+          <stop offset="100%" stopColor="#189AB5" />
+        </radialGradient>
 
-      {/* New World dark omen */}
-      <linearGradient id="newWorldTint" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%"   stopColor="rgba(20,6,30,0)"    />
-        <stop offset="100%" stopColor="rgba(25,5,18,0.58)" />
-      </linearGradient>
+        {/* Calm belt — notably darker teal */}
+        <linearGradient id="calmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stopColor="rgba(18,120,148,0.85)" />
+          <stop offset="100%" stopColor="rgba(14,96,120,0.85)"  />
+        </linearGradient>
 
-      {/* Island terrain gradients */}
-      <radialGradient id="jungleGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#2a5e30" />
-        <stop offset="100%" stopColor="#0f2812" />
-      </radialGradient>
-      <radialGradient id="desertGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#c09820" />
-        <stop offset="100%" stopColor="#6e4c08" />
-      </radialGradient>
-      <radialGradient id="snowGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#dceef8" />
-        <stop offset="100%" stopColor="#7aaccb" />
-      </radialGradient>
-      <radialGradient id="skyIslandGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#e8d8ff" />
-        <stop offset="100%" stopColor="#8858cc" />
-      </radialGradient>
-      <radialGradient id="darkGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#222438" />
-        <stop offset="100%" stopColor="#0a0c18" />
-      </radialGradient>
-      <radialGradient id="volcGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#4a1e05" />
-        <stop offset="100%" stopColor="#1c0800" />
-      </radialGradient>
-      <radialGradient id="pinkGrad" cx="35%" cy="35%" r="70%">
-        <stop offset="0%"   stopColor="#4a1530" />
-        <stop offset="100%" stopColor="#1e0810" />
-      </radialGradient>
+        {/* Red Line gradient */}
+        <linearGradient id="rlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stopColor="#280800" />
+          <stop offset="30%"  stopColor="#6B1A06" />
+          <stop offset="50%"  stopColor="#8C2A0E" />
+          <stop offset="70%"  stopColor="#6B1A06" />
+          <stop offset="100%" stopColor="#280800" />
+        </linearGradient>
 
-      {/* Vignette */}
-      <radialGradient id="vignette" cx="50%" cy="50%" r="74%">
-        <stop offset="35%"  stopColor="rgba(0,0,0,0)"    />
-        <stop offset="100%" stopColor="rgba(1,3,12,0.92)" />
-      </radialGradient>
+        {/* New World land — slightly darker/more ominous */}
+        <radialGradient id="nwLandGrad" cx="40%" cy="35%" r="75%">
+          <stop offset="0%"   stopColor="#B89058" />
+          <stop offset="100%" stopColor="#8A6030" />
+        </radialGradient>
 
-      {/* Filters */}
-      <filter id="iShadow">
-        <feDropShadow dx="0" dy="6" stdDeviation="9" floodColor="rgba(0,0,0,0.6)" />
-      </filter>
-      <filter id="sglow" x="-40%" y="-40%" width="180%" height="180%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b" />
-        <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-      <filter id="lglow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b" />
-        <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-      <filter id="fishGlow" x="-120%" y="-120%" width="340%" height="340%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="b" />
-        <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-      <filter id="textGlow" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b" />
-        <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
+        {/* Drop shadow for land masses */}
+        <filter id="landShadow" x="-5%" y="-5%" width="115%" height="115%">
+          <feDropShadow dx="4" dy="6" stdDeviation="10"
+                        floodColor="rgba(30,10,0,0.35)" />
+        </filter>
 
-    {/* ══════════════════════════════════════════
-        LAYER 1 — OCEAN BASE
-    ══════════════════════════════════════════ */}
-    <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="url(#oceanDeep)" />
+        {/* Soft glow for key markers */}
+        <filter id="markerGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
 
-    {/* Aged parchment warm tint */}
-    <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="url(#agingTint)" />
+        {/* Subtle inner vignette on ocean */}
+        <radialGradient id="oceanVig" cx="50%" cy="50%" r="70%">
+          <stop offset="40%"  stopColor="rgba(0,0,0,0)"    />
+          <stop offset="100%" stopColor="rgba(0,20,30,0.4)" />
+        </radialGradient>
+      </defs>
 
-    {/* Very faint hatching lines — old map texture */}
-    {Array.from({ length: 70 }).map((_, i) => (
-      <line key={`h${i}`} x1="0" y1={i * 32} x2={MAP_W} y2={i * 32}
-            stroke="rgba(80,55,10,0.028)" strokeWidth="1" />
-    ))}
-    {Array.from({ length: 40 }).map((_, i) => (
-      <line key={`v${i}`} x1={i * 100} y1="0" x2={i * 100} y2={MAP_H}
-            stroke="rgba(80,55,10,0.018)" strokeWidth="1" />
-    ))}
+      {/* ═══════════════════════════════════════════════
+          1. OUTER PAPER BORDER
+      ═══════════════════════════════════════════════ */}
+      <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="url(#paperGrad)" />
 
-    {/* ══════════════════════════════════════════
-        LAYER 2 — ATMOSPHERIC ZONES
-    ══════════════════════════════════════════ */}
-    {/* Sky island zone (top) */}
-    <rect x="0" y="0" width={MAP_W} height={680} fill="url(#skyGrad)" />
+      {/* ═══════════════════════════════════════════════
+          2. OCEAN BASE (teal covers the full map,
+             land masses will paint on top)
+      ═══════════════════════════════════════════════ */}
+      <rect x="40" y="40" width={MAP_W - 80} height={MAP_H - 80}
+            fill="url(#oceanGrad)" rx="4" />
 
-    {/* Cloud wisps in sky zone */}
-    <g opacity="0.15" fill="rgba(200,175,255,1)">
-      {[350, 850, 1480, 1860, 2300, 2750, 3300, 3750].map((cx, i) => (
+      {/* Subtle ocean depth lines */}
+      {Array.from({ length: 28 }).map((_, i) => (
+        <line key={i} x1="40" y1={40 + i * 76} x2={MAP_W - 40} y2={40 + i * 76}
+              stroke="rgba(20,90,115,0.08)" strokeWidth="1.5" />
+      ))}
+
+      {/* ═══════════════════════════════════════════════
+          3. CALM BELT BANDS
+      ═══════════════════════════════════════════════ */}
+      {/* Northern Calm Belt (CALM_N to GL_Y) */}
+      <rect x="40" y={CALM_N} width={MAP_W - 80} height={GL_Y - CALM_N}
+            fill="url(#calmGrad)" />
+      {/* Southern Calm Belt (GL_Y to CALM_S) */}
+      <rect x="40" y={GL_Y} width={MAP_W - 80} height={CALM_S - GL_Y}
+            fill="url(#calmGrad)" />
+
+      {/* Grand Line center stripe */}
+      <rect x="40" y={GL_Y - 4} width={MAP_W - 80} height={8}
+            fill="rgba(10,60,90,0.6)" />
+      {/* GL current shimmer */}
+      <line x1="40" y1={GL_Y} x2={MAP_W - 40} y2={GL_Y}
+            stroke="rgba(255,255,255,0.18)" strokeWidth="1.5"
+            strokeDasharray="20,12" />
+
+      {/* Calm Belt hatching */}
+      {Array.from({ length: 14 }).map((_, i) => (
         <g key={i}>
-          <ellipse cx={cx}       cy={140 + (i % 3) * 35} rx={170} ry={52} />
-          <ellipse cx={cx + 100} cy={165 + (i % 3) * 25} rx={130} ry={40} />
+          <line x1="40"        y1={CALM_N + 20 + i * 30} x2={MAP_W - 40} y2={CALM_N + 20 + i * 30}
+                stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+          <line x1="40"        y1={GL_Y   + 20 + i * 30} x2={MAP_W - 40} y2={GL_Y   + 20 + i * 30}
+                stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
         </g>
       ))}
-    </g>
 
-    {/* New World dark tint */}
-    <rect x={RL2_X} y="0" width={MAP_W - RL2_X} height={MAP_H} fill="url(#newWorldTint)" />
+      {/* ═══════════════════════════════════════════════
+          4. LAND MASSES — organic continent shapes
+      ═══════════════════════════════════════════════ */}
 
-    {/* Storm clouds in New World (top area) */}
-    <g opacity="0.18" fill="rgba(40,20,60,1)">
-      <ellipse cx="3100" cy="200" rx="200" ry="70" />
-      <ellipse cx="3400" cy="160" rx="160" ry="55" />
-      <ellipse cx="3700" cy="220" rx="180" ry="62" />
-      <ellipse cx="3900" cy="175" rx="140" ry="48" />
-    </g>
+      {/* ── NORTH BLUE (upper-left) ─────────────── */}
+      {/* Large main continent */}
+      <path filter="url(#landShadow)"
+            fill="url(#landGrad)"
+            d={`
+              M 80,75
+              Q 180,48 340,65   Q 510,42 660,72
+              Q 800,50 940,80   Q 1020,95 1055,160
+              Q 1072,240 1052,360 Q 1068,460 1045,560
+              Q 1058,650 1028,740 Q 1000,810 950,840
+              Q 880,862 780,848  Q 680,866 575,848
+              Q 470,866 365,845  Q 250,864 160,840
+              Q 90,820 62,758    Q 42,688 52,600
+              Q 34,510 52,418   Q 36,330 58,246
+              Q 54,162 80,75 Z
+            `}
+      />
+      {/* Peninsula juts */}
+      <path fill="url(#landGrad)"
+            d={`M 820,840 Q 880,870 900,930 Q 860,958 820,940 Q 790,910 820,840 Z`} />
+      <path fill="url(#landGrad)"
+            d={`M 250,840 Q 240,890 210,930 Q 175,950 165,910 Q 168,868 250,840 Z`} />
+      {/* Highlight ridge */}
+      <path fill={C.parchHi} opacity="0.55"
+            d={`M 120,90 Q 250,60 420,78 Q 560,55 700,85 Q 820,62 930,92
+                Q 980,110 1040,180 Q 1060,200 1042,240
+                Q 980,195 900,175 Q 780,150 660,130 Q 520,110 380,125
+                Q 250,112 140,132 Q 100,120 80,100 Q 95,90 120,90 Z`}
+      />
 
-    {/* Northern Calm Belt */}
-    <rect x="0" y={CALM_N}       width={MAP_W} height={GL_Y - CALM_N} fill="rgba(4,5,26,0.70)" />
-    <rect x="0" y={CALM_N - 35}  width={MAP_W} height={55}            fill="rgba(10,14,50,0.32)" />
+      {/* ── SOUTH BLUE (lower-left) ─────────────── */}
+      {/* Main southern landmass */}
+      <path filter="url(#landShadow)"
+            fill="url(#landGrad)"
+            d={`
+              M 80,1295
+              Q 120,1268 230,1278 Q 350,1255 480,1275
+              Q 560,1258 650,1278 Q 750,1258 850,1282
+              Q 960,1265 1040,1310
+              Q 1068,1380 1048,1480 Q 1065,1580 1040,1680
+              Q 1055,1780 1020,1870 Q 990,1940 945,1985
+              Q 880,2020 775,2000 Q 670,2022 560,2000
+              Q 448,2022 335,1995 Q 225,2018 148,1990
+              Q 80,1962 58,1895 Q 38,1820 50,1730
+              Q 32,1640 52,1550 Q 35,1458 58,1380
+              Q 52,1330 80,1295 Z
+            `}
+      />
+      {/* Separate island cluster (south-left) */}
+      <path filter="url(#landShadow)"
+            fill="url(#landGrad)"
+            d={`M 62,2080 Q 120,2050 220,2065 Q 320,2042 420,2060
+                Q 495,2070 520,2110 Q 510,2155 460,2170
+                Q 370,2188 265,2172 Q 165,2190 95,2165
+                Q 55,2145 55,2115 Q 58,2092 62,2080 Z`}
+      />
 
-    {/* Southern Calm Belt */}
-    <rect x="0" y={GL_Y}         width={MAP_W} height={CALM_S - GL_Y} fill="rgba(4,5,26,0.70)" />
-    <rect x="0" y={CALM_S - 25}  width={MAP_W} height={55}            fill="rgba(10,14,50,0.32)" />
+      {/* ── PARADISE — upper island clusters ──── */}
+      {/* Paradise has scattered island groups, not one big continent */}
+      {/* Cluster A — upper Paradise (near Alabasta/Drum level) */}
+      <path filter="url(#landShadow)" fill="url(#landGrad)"
+            d={`M 1140,75 Q 1260,48 1420,68 Q 1560,45 1700,72
+                Q 1820,52 1960,80 Q 2020,95 2050,155
+                Q 2065,215 2038,295 Q 2055,360 2028,430
+                Q 2010,480 1960,510 Q 1880,535 1780,518
+                Q 1680,538 1570,515 Q 1455,535 1340,510
+                Q 1238,528 1160,498 Q 1108,468 1100,400
+                Q 1085,320 1105,250 Q 1090,172 1120,110 Q 1128,88 1140,75 Z`}
+      />
+      {/* Cluster B — mid Paradise upper */}
+      <path filter="url(#landShadow)" fill="url(#landGrad)"
+            d={`M 2120,65 Q 2220,42 2380,62 Q 2520,42 2660,68
+                Q 2780,52 2890,105 Q 2918,165 2900,255
+                Q 2915,335 2890,415 Q 2905,485 2872,548
+                Q 2840,592 2780,615 Q 2700,635 2600,618
+                Q 2498,638 2390,615 Q 2280,635 2180,608
+                Q 2100,585 2070,525 Q 2048,462 2065,390
+                Q 2050,318 2070,248 Q 2058,158 2095,100 Q 2108,78 2120,65 Z`}
+      />
+      {/* Small islands — Skypiea area (upper central) */}
+      <ellipse cx={1860} cy={330} rx="130" ry="80" fill="url(#landGrad)"
+               filter="url(#landShadow)" />
+      <ellipse cx={1680} cy={280} rx="85"  ry="52" fill="url(#landGrad)" />
+      <ellipse cx={2040} cy={260} rx="72"  ry="44" fill="url(#landGrad)" />
 
-    {/* Grand Line — mystical band */}
-    <rect x="0" y={GL_Y - 45}    width={MAP_W} height={90}            fill="url(#glGrad)" />
-    <line x1="0" y1={GL_Y} x2={MAP_W} y2={GL_Y}
-          stroke="rgba(60,130,240,0.35)" strokeWidth="3" filter="url(#sglow)" />
+      {/* ── PARADISE — lower island clusters ──── */}
+      {/* Cluster C — lower Paradise */}
+      <path filter="url(#landShadow)" fill="url(#landGrad)"
+            d={`M 1140,1295 Q 1260,1268 1420,1288 Q 1555,1262 1690,1288
+                Q 1820,1265 1960,1295 Q 2038,1318 2050,1390
+                Q 2065,1458 2038,1555 Q 2055,1640 2028,1728
+                Q 2008,1800 1952,1838 Q 1875,1865 1775,1848
+                Q 1670,1868 1555,1845 Q 1440,1865 1328,1840
+                Q 1218,1860 1148,1828 Q 1098,1798 1090,1730
+                Q 1075,1648 1098,1555 Q 1082,1468 1102,1390
+                Q 1110,1325 1140,1295 Z`}
+      />
+      {/* Cluster D — right Paradise lower */}
+      <path filter="url(#landShadow)" fill="url(#landGrad)"
+            d={`M 2130,1282 Q 2248,1258 2400,1275 Q 2540,1252 2680,1278
+                Q 2800,1258 2905,1305 Q 2938,1368 2918,1455
+                Q 2932,1538 2905,1625 Q 2918,1710 2885,1795
+                Q 2855,1865 2795,1905 Q 2715,1935 2605,1915
+                Q 2498,1938 2385,1912 Q 2272,1935 2162,1908
+                Q 2082,1885 2055,1815 Q 2035,1745 2052,1665
+                Q 2038,1580 2058,1498 Q 2042,1415 2065,1350
+                Q 2080,1302 2130,1282 Z`}
+      />
+      {/* Smaller islands */}
+      <ellipse cx={1520} cy={1600} rx="90"  ry="55" fill="url(#landGrad)"
+               filter="url(#landShadow)" />
+      <ellipse cx={2350} cy={1450} rx="75"  ry="46" fill="url(#landGrad)"
+               filter="url(#landShadow)" />
+      <ellipse cx={2600} cy={1650} rx="65"  ry="40" fill="url(#landGrad)"
+               filter="url(#landShadow)" />
 
-    {/* ══════════════════════════════════════════
-        LAYER 3 — DECORATIVE BORDER FRAME
-    ══════════════════════════════════════════ */}
-    <rect x="18" y="18" width={MAP_W - 36} height={MAP_H - 36}
-          fill="none" stroke="rgba(180,130,25,0.45)" strokeWidth="5" rx="6" />
-    <rect x="30" y="30" width={MAP_W - 60} height={MAP_H - 60}
-          fill="none" stroke="rgba(180,130,25,0.20)" strokeWidth="2" rx="4" />
+      {/* ── NEW WORLD (right of RL2) — upper ─── */}
+      <path filter="url(#landShadow)"
+            fill="url(#nwLandGrad)"
+            d={`
+              M 2980,78
+              Q 3100,50 3280,68   Q 3460,45 3640,72
+              Q 3810,50 3960,105
+              Q 3990,175 3972,275  Q 3988,365 3962,465
+              Q 3978,560 3948,648  Q 3932,728 3892,788
+              Q 3840,830 3755,848  Q 3655,865 3540,848
+              Q 3430,865 3315,845  Q 3198,865 3082,840
+              Q 2985,812 2958,748  Q 2935,675 2952,588
+              Q 2932,498 2955,405  Q 2935,308 2960,222
+              Q 2956,145 2980,78 Z
+            `}
+      />
+      {/* New World peninsula */}
+      <path fill="url(#nwLandGrad)"
+            d={`M 3040,840 Q 3020,895 2995,950 Q 2968,978 2952,955
+                Q 2942,920 2960,878 Q 2985,845 3040,840 Z`} />
+      <path fill="url(#nwLandGrad)"
+            d={`M 3870,840 Q 3892,888 3910,938 Q 3928,968 3958,952
+                Q 3975,918 3958,878 Q 3928,845 3870,840 Z`} />
 
-    {/* Corner ornaments */}
-    {[[40,40,0],[MAP_W-40,40,90],[MAP_W-40,MAP_H-40,180],[40,MAP_H-40,270]].map(([cx,cy,rot], i) => (
-      <g key={i} transform={`translate(${cx},${cy}) rotate(${rot})`} opacity="0.55">
-        <line x1="0"  y1="0"  x2="50" y2="0"  stroke="rgba(200,150,25,0.7)" strokeWidth="2.5" />
-        <line x1="0"  y1="0"  x2="0"  y2="50" stroke="rgba(200,150,25,0.7)" strokeWidth="2.5" />
-        <circle cx="0" cy="0" r="5" fill="rgba(200,150,25,0.75)" />
-        <circle cx="0" cy="0" r="2.5" fill="rgba(240,190,50,0.9)" />
+      {/* ── WEST BLUE (right of RL2, lower) ───── */}
+      <path filter="url(#landShadow)"
+            fill="url(#nwLandGrad)"
+            d={`M 2975,1295 Q 3095,1265 3265,1285 Q 3440,1260 3615,1285
+                Q 3790,1260 3960,1308 Q 3990,1372 3970,1465
+                Q 3985,1558 3958,1650 Q 3972,1742 3940,1832
+                Q 3908,1908 3850,1950 Q 3775,1985 3662,1968
+                Q 3548,1988 3428,1965 Q 3308,1985 3188,1960
+                Q 3065,1982 2975,1945 Q 2935,1905 2930,1838
+                Q 2912,1758 2932,1668 Q 2915,1578 2938,1490
+                Q 2920,1400 2945,1340 Q 2958,1308 2975,1295 Z`}
+      />
+      {/* West Blue lower island */}
+      <path filter="url(#landShadow)"
+            fill="url(#nwLandGrad)"
+            d={`M 2968,2050 Q 3055,2022 3195,2040 Q 3325,2018 3435,2042
+                Q 3510,2060 3528,2110 Q 3515,2160 3455,2175
+                Q 3352,2195 3230,2178 Q 3108,2198 3018,2172
+                Q 2968,2148 2958,2112 Q 2960,2078 2968,2050 Z`}
+      />
+      {/* Scattered NW islands */}
+      <ellipse cx={3150} cy={2000} rx="80"  ry="48" fill="url(#nwLandGrad)" />
+      <ellipse cx={3700} cy={2020} rx="70"  ry="42" fill="url(#nwLandGrad)" />
+      <ellipse cx={3880} cy={1980} rx="55"  ry="34" fill="url(#nwLandGrad)" />
+
+      {/* Small East Blue islands near marker positions */}
+      {[
+        [420,1184,72,42],[560,1067,58,35],[700,1342,55,33],
+        [480,1474,55,33],[860,1144,38,22],[340,1584,60,36],
+        [980,1056,58,35],
+      ].map(([cx,cy,rx,ry],i) => (
+        <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry}
+                 fill="url(#landGrad)" filter="url(#landShadow)" />
+      ))}
+
+      {/* Small Paradise/NewWorld islands near marker positions */}
+      {[
+        // Alabasta saga
+        [1260,957,52,30],[1420,1133,80,50],[1560,1254,72,44],
+        [1720,913,105,65],[1860,1232,60,36],
+        // Water 7 area
+        [2020,1111,130,26],[2140,957,90,55],[2220,1056,55,33],
+        [2380,1199,85,52],[2580,1034,75,45],
+        // Summit War
+        [2340,1628,65,38],[2540,1738,45,28],[2700,781,112,68],
+        // New World
+        [3140,979,88,54],[3300,1177,92,56],[3000,1254,100,62],
+        [3220,1342,82,50],[3500,946,100,62],[3380,781,75,46],
+      ].map(([cx,cy,rx,ry],i) => (
+        <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry}
+                 fill={cx > RL2_X ? 'url(#nwLandGrad)' : 'url(#landGrad)'}
+                 filter="url(#landShadow)" />
+      ))}
+
+      {/* ═══════════════════════════════════════════════
+          5. RED LINES — vertical mountain ranges
+      ═══════════════════════════════════════════════ */}
+
+      {/* RL1 */}
+      <rect x={RL1_X - 36} y="40" width="72" height={MAP_H - 80} fill="url(#rlGrad)" />
+      {/* RL1 western mountain silhouette */}
+      <path fill={C.rlHi} opacity="0.55"
+            d={`M ${RL1_X-36},40
+                L ${RL1_X-68},132 L ${RL1_X-36},212
+                L ${RL1_X-55},308 L ${RL1_X-36},388
+                L ${RL1_X-72},484 L ${RL1_X-36},564
+                L ${RL1_X-58},660 L ${RL1_X-36},740
+                L ${RL1_X-74},836 L ${RL1_X-36},916
+                L ${RL1_X-62},1012 L ${RL1_X-36},1092
+                L ${RL1_X-68},1188 L ${RL1_X-36},1268
+                L ${RL1_X-56},1364 L ${RL1_X-36},1444
+                L ${RL1_X-70},1540 L ${RL1_X-36},1620
+                L ${RL1_X-60},1716 L ${RL1_X-36},1796
+                L ${RL1_X-66},1892 L ${RL1_X-36},1972
+                L ${RL1_X-54},2068 L ${RL1_X-36},2160
+                L ${RL1_X+36},2160 L ${RL1_X+36},40 Z`}
+      />
+      <path fill={C.rlHi} opacity="0.55"
+            d={`M ${RL1_X+36},40
+                L ${RL1_X+68},132 L ${RL1_X+36},212
+                L ${RL1_X+55},308 L ${RL1_X+36},388
+                L ${RL1_X+72},484 L ${RL1_X+36},564
+                L ${RL1_X+58},660 L ${RL1_X+36},740
+                L ${RL1_X+74},836 L ${RL1_X+36},916
+                L ${RL1_X+62},1012 L ${RL1_X+36},1092
+                L ${RL1_X+68},1188 L ${RL1_X+36},1268
+                L ${RL1_X+56},1364 L ${RL1_X+36},1444
+                L ${RL1_X+70},1540 L ${RL1_X+36},1620
+                L ${RL1_X+60},1716 L ${RL1_X+36},1796
+                L ${RL1_X+66},1892 L ${RL1_X+36},1972
+                L ${RL1_X+54},2068 L ${RL1_X+36},2160
+                L ${RL1_X-36},2160 L ${RL1_X-36},40 Z`}
+      />
+
+      {/* RL2 */}
+      <rect x={RL2_X - 36} y="40" width="72" height={MAP_H - 80} fill="url(#rlGrad)" />
+      <path fill={C.rlHi} opacity="0.55"
+            d={`M ${RL2_X-36},40
+                L ${RL2_X-68},132 L ${RL2_X-36},212
+                L ${RL2_X-55},308 L ${RL2_X-36},388
+                L ${RL2_X-72},484 L ${RL2_X-36},564
+                L ${RL2_X-58},660 L ${RL2_X-36},740
+                L ${RL2_X-74},836 L ${RL2_X-36},916
+                L ${RL2_X-62},1012 L ${RL2_X-36},1092
+                L ${RL2_X-68},1188 L ${RL2_X-36},1268
+                L ${RL2_X-56},1364 L ${RL2_X-36},1444
+                L ${RL2_X-70},1540 L ${RL2_X-36},1620
+                L ${RL2_X-60},1716 L ${RL2_X-36},1796
+                L ${RL2_X-66},1892 L ${RL2_X-36},1972
+                L ${RL2_X-54},2068 L ${RL2_X-36},2160
+                L ${RL2_X+36},2160 L ${RL2_X+36},40 Z`}
+      />
+      <path fill={C.rlHi} opacity="0.55"
+            d={`M ${RL2_X+36},40
+                L ${RL2_X+68},132 L ${RL2_X+36},212
+                L ${RL2_X+55},308 L ${RL2_X+36},388
+                L ${RL2_X+72},484 L ${RL2_X+36},564
+                L ${RL2_X+58},660 L ${RL2_X+36},740
+                L ${RL2_X+74},836 L ${RL2_X+36},916
+                L ${RL2_X+62},1012 L ${RL2_X+36},1092
+                L ${RL2_X+68},1188 L ${RL2_X+36},1268
+                L ${RL2_X+56},1364 L ${RL2_X+36},1444
+                L ${RL2_X+70},1540 L ${RL2_X+36},1620
+                L ${RL2_X+60},1716 L ${RL2_X+36},1796
+                L ${RL2_X+66},1892 L ${RL2_X+36},1972
+                L ${RL2_X+54},2068 L ${RL2_X+36},2160
+                L ${RL2_X-36},2160 L ${RL2_X-36},40 Z`}
+      />
+
+      {/* ═══════════════════════════════════════════════
+          6. MARY GEOISE — citadel atop RL2
+      ═══════════════════════════════════════════════ */}
+      <rect x={RL2_X - 52} y="40"  width="104" height="175" fill="#2A0E04" />
+      <rect x={RL2_X - 44} y="40"  width="88"  height="158" fill="#3C1608" />
+      <rect x={RL2_X - 40} y="56"  width="80"  height="130" fill="#501E0C" />
+      {/* Battlements */}
+      {Array.from({ length: 14 }).map((_, i) => (
+        <rect key={i}
+              x={RL2_X - 38 + i * 5.8} y="178"
+              width="4.2" height="14" fill="#3C1608" />
+      ))}
+      {/* Towers */}
+      <rect x={RL2_X - 44} y="40" width="18" height="88" fill="#4A1C0A" />
+      <rect x={RL2_X + 26} y="40" width="18" height="88" fill="#4A1C0A" />
+      <rect x={RL2_X - 8}  y="40" width="16" height="100" fill="#4A1C0A" />
+      {/* Flag */}
+      <polygon points={`${RL2_X},40 ${RL2_X+22},54 ${RL2_X},68`}
+               fill="rgba(220,160,30,0.80)" />
+      <text x={RL2_X} y="122" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="12" fontWeight="bold"
+            fill={C.gold} letterSpacing="0.5">
+        MARY GEOISE
+      </text>
+
+      {/* ═══════════════════════════════════════════════
+          7. REVERSE MOUNTAIN — the Grand Entry X
+      ═══════════════════════════════════════════════ */}
+      {/* X crossing at RL1 × GL */}
+      <g transform={`translate(${RL1_X},${GL_Y})`}>
+        {/* The crossing paths */}
+        <path d={`M -55,-45 L 55,45 M 55,-45 L -55,45`}
+              stroke="#1A0C04" strokeWidth="12" strokeLinecap="round" opacity="0.5" />
+        <path d={`M -45,-35 L 45,35 M 45,-35 L -45,35`}
+              stroke={C.parchHi} strokeWidth="6" strokeLinecap="round" opacity="0.75" />
+        <circle r="14" fill={C.parch} stroke={C.label} strokeWidth="3" />
+        <circle r="6"  fill={C.gold} />
       </g>
-    ))}
 
-    {/* ══════════════════════════════════════════
-        LAYER 4 — ISLANDS
-    ══════════════════════════════════════════ */}
+      {/* RL2 × GL marker (Fishman Island / entry to New World) */}
+      <g transform={`translate(${RL2_X},${GL_Y})`}>
+        <circle r="12" fill={C.parch}   stroke={C.label} strokeWidth="3" />
+        <circle r="5"  fill="#1E96B0" />
+      </g>
 
-    {/* — East Blue islands — */}
-    <g filter="url(#iShadow)">
-      {/* Foosha Village (x:10.5%=420, y:53.8%=1184) */}
-      <ellipse cx="420"  cy="1184" rx="88"  ry="52"  fill="url(#jungleGrad)" opacity="0.9"  />
-      <ellipse cx="438"  cy="1168" rx="55"  ry="32"  fill="#2a5e30"           opacity="0.6"  />
-      {/* Shells Town (x:14%=560, y:48.5%=1067) */}
-      <ellipse cx="560"  cy="1067" rx="72"  ry="44"  fill="url(#jungleGrad)" opacity="0.88" />
-      <ellipse cx="575"  cy="1052" rx="44"  ry="27"  fill="#2a5e30"           opacity="0.58" />
-      {/* Orange Town (x:17.5%=700, y:61%=1342) */}
-      <ellipse cx="700"  cy="1342" rx="65"  ry="39"  fill="url(#jungleGrad)" opacity="0.85" />
-      {/* Syrup Village (x:12%=480, y:67%=1474) */}
-      <ellipse cx="480"  cy="1474" rx="62"  ry="38"  fill="url(#jungleGrad)" opacity="0.85" />
-      <ellipse cx="495"  cy="1460" rx="38"  ry="22"  fill="#2a5e30"           opacity="0.55" />
-      {/* Baratie */}
-      <ellipse cx="860"  cy="1144" rx="42"  ry="21"  fill="url(#jungleGrad)" opacity="0.78" />
-      {/* Arlong Park (x:8.5%=340, y:72%=1584) */}
-      <ellipse cx="340"  cy="1584" rx="70"  ry="42"  fill="url(#jungleGrad)" opacity="0.88" />
-      <ellipse cx="352"  cy="1568" rx="44"  ry="26"  fill="#2a5e30"           opacity="0.6"  />
-      {/* Loguetown (x:24.5%=980, y:48%=1056) */}
-      <ellipse cx="980"  cy="1056" rx="68"  ry="40"  fill="url(#jungleGrad)" opacity="0.88" />
-      <ellipse cx="994"  cy="1042" rx="42"  ry="25"  fill="#2a5e30"           opacity="0.58" />
-    </g>
+      {/* ═══════════════════════════════════════════════
+          8. OCEAN DEPTH VIGNETTE
+      ═══════════════════════════════════════════════ */}
+      <rect x="40" y="40" width={MAP_W - 80} height={MAP_H - 80}
+            fill="url(#oceanVig)" rx="4" />
 
-    {/* North Blue islands */}
-    <g filter="url(#iShadow)" opacity="0.7">
-      <ellipse cx="180"  cy="420"  rx="145" ry="82"  fill="#0f2812" />
-      <ellipse cx="420"  cy="330"  rx="105" ry="60"  fill="#0f2812" />
-      <ellipse cx="680"  cy="288"  rx="80"  ry="46"  fill="#0f2812" />
-      <ellipse cx="870"  cy="378"  rx="62"  ry="36"  fill="#0f2812" />
-      <ellipse cx="240"  cy="605"  rx="72"  ry="42"  fill="#0f2812" />
-      <ellipse cx="565"  cy="545"  rx="57"  ry="33"  fill="#0f2812" />
-    </g>
+      {/* ═══════════════════════════════════════════════
+          9. MAP FRAME & BORDER
+      ═══════════════════════════════════════════════ */}
+      {/* Inner frame line */}
+      <rect x="40" y="40" width={MAP_W - 80} height={MAP_H - 80}
+            fill="none" stroke={C.border} strokeWidth="6" rx="4" />
+      {/* Outer frame */}
+      <rect x="15" y="15" width={MAP_W - 30} height={MAP_H - 30}
+            fill="none" stroke={C.border} strokeWidth="3" rx="5" />
 
-    {/* South Blue islands */}
-    <g filter="url(#iShadow)" opacity="0.68">
-      <ellipse cx="220"  cy="1700" rx="124" ry="70"  fill="#0f2812" />
-      <ellipse cx="505"  cy="1808" rx="90"  ry="52"  fill="#0f2812" />
-      <ellipse cx="755"  cy="1655" rx="72"  ry="42"  fill="#0f2812" />
-      <ellipse cx="930"  cy="1748" rx="57"  ry="33"  fill="#0f2812" />
-      <ellipse cx="365"  cy="1948" rx="67"  ry="39"  fill="#0f2812" />
-    </g>
-
-    {/* — Paradise islands — */}
-    <g filter="url(#iShadow)">
-      {/* Whiskey Peak (x:31.5%=1260, y:43.5%=957) */}
-      <ellipse cx="1260" cy="957"  rx="57"  ry="34"  fill="url(#jungleGrad)" opacity="0.85" />
-      {/* Little Garden (x:35.5%=1420, y:51.5%=1133) */}
-      <ellipse cx="1420" cy="1133" rx="92"  ry="57"  fill="url(#jungleGrad)" opacity="0.92" />
-      <ellipse cx="1405" cy="1116" rx="60"  ry="38"  fill="#2a5e30"           opacity="0.65" />
-      {/* Drum Island — snow (x:39%=1560, y:57%=1254) */}
-      <ellipse cx="1560" cy="1254" rx="80"  ry="50"  fill="url(#snowGrad)"   opacity="0.92" />
-      <ellipse cx="1550" cy="1236" rx="52"  ry="33"  fill="#c8e2f0"           opacity="0.72" />
-      <ellipse cx="1556" cy="1226" rx="29"  ry="19"  fill="#e8f4fc"           opacity="0.82" />
-      {/* Alabasta — desert (x:43%=1720, y:41.5%=913) */}
-      <ellipse cx="1720" cy="913"  rx="115" ry="72"  fill="url(#desertGrad)" opacity="0.95" />
-      <ellipse cx="1738" cy="896"  rx="75"  ry="47"  fill="#c09820"           opacity="0.65" />
-      {[0,1,2,3,4].map(i => (
-        <ellipse key={i} cx={1650 + i * 35} cy={940} rx="20" ry="7"
-                 fill="rgba(180,140,20,0.28)" />
-      ))}
-      {/* Jaya (x:46.5%=1860, y:56%=1232) */}
-      <ellipse cx="1860" cy="1232" rx="67"  ry="40"  fill="url(#jungleGrad)" opacity="0.85" />
-      {/* Skypiea — sky island (x:46.5%=1860, y:14%=308) */}
-      <ellipse cx="1860" cy="308"  rx="110" ry="68"  fill="url(#skyIslandGrad)" opacity="0.88" />
-      <ellipse cx="1875" cy="290"  rx="72"  ry="45"  fill="#d8c8ff"              opacity="0.65" />
-      <ellipse cx="1858" cy="302"  rx="46"  ry="29"  fill="#ece4ff"              opacity="0.55" />
-      <ellipse cx="1755" cy="328"  rx="85"  ry="30"  fill="rgba(220,200,255,0.20)" />
-      <ellipse cx="1968" cy="320"  rx="80"  ry="26"  fill="rgba(220,200,255,0.20)" />
-      {/* Long Ring Long Land (x:50.5%=2020, y:50.5%=1111) */}
-      <ellipse cx="2020" cy="1111" rx="150" ry="27"  fill="url(#jungleGrad)" opacity="0.80" />
-      {/* Water 7 (x:53.5%=2140, y:43.5%=957) */}
-      <ellipse cx="2140" cy="957"  rx="98"  ry="60"  fill="url(#jungleGrad)" opacity="0.9"  />
-      <ellipse cx="2155" cy="940"  rx="62"  ry="39"  fill="#2a5e30"           opacity="0.62" />
-      {[-1,0,1].map(i => (
-        <rect key={i} x={2100 + i * 28} y="918" width="7" height="58"
-              fill="rgba(8,38,95,0.38)" rx="3" />
-      ))}
-      {/* Enies Lobby (x:55.5%=2220, y:48%=1056) */}
-      <ellipse cx="2220" cy="1056" rx="60"  ry="37"  fill="url(#darkGrad)"   opacity="0.88" />
-      {/* Thriller Bark (x:59.5%=2380, y:54.5%=1199) */}
-      <ellipse cx="2380" cy="1199" rx="94"  ry="58"  fill="url(#darkGrad)"   opacity="0.92" />
-      <ellipse cx="2380" cy="1183" rx="60"  ry="37"  fill="#181c24"           opacity="0.72" />
-      {/* Sabaody (x:64.5%=2580, y:47%=1034) */}
-      <ellipse cx="2580" cy="1034" rx="82"  ry="50"  fill="url(#jungleGrad)" opacity="0.85" />
-      {[-30,-10,10,30,0].map((ox, i) => (
-        <ellipse key={i} cx={2580 + ox} cy={1034 + (i % 2 === 0 ? -22 : 14)}
-                 rx="13" ry="13" fill="none"
-                 stroke="rgba(79,195,247,0.28)" strokeWidth="2" />
-      ))}
-      {/* Amazon Lily (x:58.5%=2340, y:74%=1628) */}
-      <ellipse cx="2340" cy="1628" rx="70"  ry="42"  fill="url(#jungleGrad)" opacity="0.85" />
-      {/* Impel Down (x:63.5%=2540, y:79%=1738) */}
-      <ellipse cx="2540" cy="1738" rx="50"  ry="32"  fill="url(#darkGrad)"   opacity="0.92" />
-      {/* Marineford (x:67.5%=2700, y:35.5%=781) */}
-      <ellipse cx="2700" cy="781"  rx="118" ry="72"  fill="url(#darkGrad)"   opacity="0.92" />
-      <ellipse cx="2707" cy="764"  rx="76"  ry="47"  fill="#1e2038"           opacity="0.72" />
-      {[-3,-1,1,3].map(i => (
-        <rect key={i} x={2680 + i * 16} y="728" width="11" height="22"
-              fill="rgba(110,120,175,0.38)" rx="2" />
-      ))}
-      {/* Decorative Paradise islands */}
-      {[
-        [1685,648,40,23],[1955,478,34,19],[2085,705,30,17],
-        [2325,552,37,21],[2465,752,29,16],[1855,1485,34,19],
-        [2205,1555,40,23],[2485,1405,32,18],
-      ].map(([cx,cy,rx,ry], i) => (
-        <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry}
-                 fill="#0f2812" opacity="0.45" />
-      ))}
-    </g>
-
-    {/* — New World islands — */}
-    <g filter="url(#iShadow)">
-      {/* Punk Hazard — split ice/fire (x:78.5%=3140, y:44.5%=979) */}
-      <ellipse cx="3100" cy="979"  rx="92"  ry="57"  fill="url(#snowGrad)"   opacity="0.88" />
-      <ellipse cx="3192" cy="994"  rx="92"  ry="57"  fill="url(#volcGrad)"   opacity="0.88" />
-      <line x1="3148" y1="922" x2="3148" y2="1036"
-            stroke="rgba(220,80,15,0.65)" strokeWidth="3" filter="url(#sglow)" />
-      {/* Dressrosa (x:82.5%=3300, y:53.5%=1177) */}
-      <ellipse cx="3300" cy="1177" rx="98"  ry="60"  fill="url(#pinkGrad)"   opacity="0.88" />
-      <ellipse cx="3310" cy="1160" rx="62"  ry="39"  fill="#3e1830"           opacity="0.68" />
-      {/* Whole Cake Island (x:75%=3000, y:57%=1254) */}
-      <ellipse cx="3000" cy="1254" rx="108" ry="67"  fill="url(#pinkGrad)"   opacity="0.9"  />
-      <ellipse cx="3010" cy="1236" rx="70"  ry="44"  fill="#3e1830"           opacity="0.70" />
-      {/* Zou (x:80.5%=3220, y:61%=1342) */}
-      <ellipse cx="3220" cy="1342" rx="88"  ry="54"  fill="url(#jungleGrad)" opacity="0.88" />
-      <rect x="3188" y="1392" width="24" height="58" fill="#0f2812" rx="7"  opacity="0.62" />
-      <rect x="3234" y="1392" width="24" height="58" fill="#0f2812" rx="7"  opacity="0.62" />
-      {/* Wano Country (x:87.5%=3500, y:43%=946) */}
-      <ellipse cx="3500" cy="946"  rx="108" ry="67"  fill="url(#volcGrad)"   opacity="0.92" />
-      <ellipse cx="3495" cy="928"  rx="70"  ry="45"  fill="#3a2808"           opacity="0.72" />
-      <path d="M 3458,895 L 3474,862 L 3492,893 Z" fill="rgba(170,120,35,0.42)" />
-      <path d="M 3512,880 L 3532,843 L 3550,878 Z" fill="rgba(170,120,35,0.42)" />
-      {/* Egghead (x:84.5%=3380, y:35.5%=781) */}
-      <ellipse cx="3380" cy="781"  rx="80"  ry="49"  fill="url(#darkGrad)"   opacity="0.9"  />
-      <ellipse cx="3380" cy="781"  rx="80"  ry="49"  fill="none"
-               stroke="rgba(79,195,247,0.30)" strokeWidth="4" filter="url(#sglow)" />
-      {/* West Blue */}
-      <ellipse cx="3105" cy="258"  rx="133" ry="74"  fill="#0f2812" opacity="0.68" />
-      <ellipse cx="3382" cy="208"  rx="98"  ry="55"  fill="#0f2812" opacity="0.63" />
-      <ellipse cx="3755" cy="302"  rx="112" ry="63"  fill="#0f2812" opacity="0.65" />
-      <ellipse cx="3656" cy="1705" rx="84"  ry="49"  fill="#0f2812" opacity="0.60" />
-      <ellipse cx="3884" cy="1825" rx="72"  ry="43"  fill="#0f2812" opacity="0.58" />
-      {/* Decorative NW islands */}
-      {[
-        [3052,602,44,25],[3282,682,38,21],[3602,552,42,23],[3822,702,36,20],
-      ].map(([cx,cy,rx,ry], i) => (
-        <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry}
-                 fill="#1a1228" opacity="0.48" />
-      ))}
-    </g>
-
-    {/* ══════════════════════════════════════════
-        LAYER 5 — RED LINES (mountain ranges)
-    ══════════════════════════════════════════ */}
-
-    {/* RL1 base */}
-    <rect x={RL1_X - 40} y="0" width="80" height={MAP_H} fill="url(#rlGrad)" />
-    {/* RL1 western mountain silhouette */}
-    <path fill="#501408" opacity="0.72"
-      d={`M ${RL1_X-40},0
-          L ${RL1_X-76},95   L ${RL1_X-40},185
-          L ${RL1_X-60},288  L ${RL1_X-40},378
-          L ${RL1_X-80},478  L ${RL1_X-40},568
-          L ${RL1_X-64},668  L ${RL1_X-40},758
-          L ${RL1_X-82},858  L ${RL1_X-40},948
-          L ${RL1_X-68},1048 L ${RL1_X-40},1138
-          L ${RL1_X-75},1238 L ${RL1_X-40},1328
-          L ${RL1_X-62},1428 L ${RL1_X-40},1518
-          L ${RL1_X-78},1618 L ${RL1_X-40},1708
-          L ${RL1_X-64},1808 L ${RL1_X-40},1898
-          L ${RL1_X-72},1998 L ${RL1_X-40},2088
-          L ${RL1_X-57},2200
-          L ${RL1_X+40},2200 L ${RL1_X+40},0 Z`}
-    />
-    {/* RL1 eastern mountain silhouette */}
-    <path fill="#501408" opacity="0.72"
-      d={`M ${RL1_X+40},0
-          L ${RL1_X+76},95   L ${RL1_X+40},185
-          L ${RL1_X+58},288  L ${RL1_X+40},378
-          L ${RL1_X+80},478  L ${RL1_X+40},568
-          L ${RL1_X+62},668  L ${RL1_X+40},758
-          L ${RL1_X+82},858  L ${RL1_X+40},948
-          L ${RL1_X+66},1048 L ${RL1_X+40},1138
-          L ${RL1_X+73},1238 L ${RL1_X+40},1328
-          L ${RL1_X+60},1428 L ${RL1_X+40},1518
-          L ${RL1_X+76},1618 L ${RL1_X+40},1708
-          L ${RL1_X+62},1808 L ${RL1_X+40},1898
-          L ${RL1_X+70},1998 L ${RL1_X+40},2088
-          L ${RL1_X+55},2200
-          L ${RL1_X-40},2200 L ${RL1_X-40},0 Z`}
-    />
-    {/* RL1 glow */}
-    <line x1={RL1_X} y1="0" x2={RL1_X} y2={MAP_H}
-          stroke="rgba(160,60,12,0.32)" strokeWidth="2.5" filter="url(#sglow)" />
-
-    {/* RL2 base */}
-    <rect x={RL2_X - 40} y="0" width="80" height={MAP_H} fill="url(#rlGrad)" />
-    {/* RL2 western mountain silhouette */}
-    <path fill="#501408" opacity="0.72"
-      d={`M ${RL2_X-40},0
-          L ${RL2_X-76},95   L ${RL2_X-40},185
-          L ${RL2_X-60},288  L ${RL2_X-40},378
-          L ${RL2_X-80},478  L ${RL2_X-40},568
-          L ${RL2_X-64},668  L ${RL2_X-40},758
-          L ${RL2_X-82},858  L ${RL2_X-40},948
-          L ${RL2_X-68},1048 L ${RL2_X-40},1138
-          L ${RL2_X-75},1238 L ${RL2_X-40},1328
-          L ${RL2_X-62},1428 L ${RL2_X-40},1518
-          L ${RL2_X-78},1618 L ${RL2_X-40},1708
-          L ${RL2_X-64},1808 L ${RL2_X-40},1898
-          L ${RL2_X-72},1998 L ${RL2_X-40},2088
-          L ${RL2_X-57},2200
-          L ${RL2_X+40},2200 L ${RL2_X+40},0 Z`}
-    />
-    {/* RL2 eastern mountain silhouette */}
-    <path fill="#501408" opacity="0.72"
-      d={`M ${RL2_X+40},0
-          L ${RL2_X+76},95   L ${RL2_X+40},185
-          L ${RL2_X+58},288  L ${RL2_X+40},378
-          L ${RL2_X+80},478  L ${RL2_X+40},568
-          L ${RL2_X+62},668  L ${RL2_X+40},758
-          L ${RL2_X+82},858  L ${RL2_X+40},948
-          L ${RL2_X+66},1048 L ${RL2_X+40},1138
-          L ${RL2_X+73},1238 L ${RL2_X+40},1328
-          L ${RL2_X+60},1428 L ${RL2_X+40},1518
-          L ${RL2_X+76},1618 L ${RL2_X+40},1708
-          L ${RL2_X+62},1808 L ${RL2_X+40},1898
-          L ${RL2_X+70},1998 L ${RL2_X+40},2088
-          L ${RL2_X+55},2200
-          L ${RL2_X-40},2200 L ${RL2_X-40},0 Z`}
-    />
-    <line x1={RL2_X} y1="0" x2={RL2_X} y2={MAP_H}
-          stroke="rgba(160,60,12,0.32)" strokeWidth="2.5" filter="url(#sglow)" />
-
-    {/* ══════════════════════════════════════════
-        LAYER 6 — MARY GEOISE
-    ══════════════════════════════════════════ */}
-    <rect x={RL2_X - 58} y="0"   width="116" height="210" fill="#1a0a02" />
-    <rect x={RL2_X - 50} y="0"   width="100" height="190" fill="#271208" />
-    <rect x={RL2_X - 46} y="22"  width="92"  height="145" fill="#321708" />
-    {/* Battlements */}
-    {Array.from({ length: 16 }).map((_, i) => (
-      <rect key={i} x={RL2_X - 44 + i * 6} y="160" width="4.5" height="16" fill="#4a220c" />
-    ))}
-    {/* Towers */}
-    <rect x={RL2_X - 50} y="0"   width="20"  height="100" fill="#3e1e0c" />
-    <rect x={RL2_X + 30} y="0"   width="20"  height="100" fill="#3e1e0c" />
-    <rect x={RL2_X - 8}  y="0"   width="16"  height="115" fill="#3e1e0c" />
-    {/* Gold flag top */}
-    <polygon points={`${RL2_X-8},0 ${RL2_X+20},15 ${RL2_X-8},30`}
-             fill="rgba(240,180,41,0.75)" />
-    <text x={RL2_X} y="115" textAnchor="middle"
-          fontFamily="Cinzel" fontSize="14" fontWeight="bold"
-          fill="rgba(240,180,41,0.78)" letterSpacing="0.5"
-          stroke="rgba(0,0,0,0.9)" strokeWidth="4" paintOrder="stroke fill">
-      MARY GEOISE
-    </text>
-
-    {/* ══════════════════════════════════════════
-        LAYER 7 — LANDMARK MARKERS
-    ══════════════════════════════════════════ */}
-    {/* Reverse Mountain RL1 × GL */}
-    <circle cx={RL1_X} cy={GL_Y} r="16" fill="rgba(240,180,41,0.88)" filter="url(#lglow)" />
-    <circle cx={RL1_X} cy={GL_Y} r="7"  fill="rgba(255,225,110,0.98)" />
-
-    {/* Fishman Island corridor RL2 × GL */}
-    <circle cx={RL2_X} cy={GL_Y} r="16" fill="rgba(38,198,218,0.88)"  filter="url(#fishGlow)" />
-    <circle cx={RL2_X} cy={GL_Y} r="7"  fill="rgba(100,235,245,0.98)" />
-
-    {/* Fishman Island glow (deep below RL2) */}
-    <ellipse cx="2940" cy={GL_Y} rx="105" ry="58"
-             fill="rgba(18,75,95,0.38)" filter="url(#fishGlow)" />
-
-    {/* ══════════════════════════════════════════
-        LAYER 8 — SHIP SILHOUETTES
-    ══════════════════════════════════════════ */}
-    {/* Sailing ship in East Blue sea */}
-    <g transform="translate(640,1750)" opacity="0.22" fill="rgba(120,85,20,1)">
-      <ellipse cx="0" cy="18" rx="55" ry="16" />
-      <line x1="0" y1="-70" x2="0" y2="18" stroke="rgba(120,85,20,1)" strokeWidth="3" />
-      <polygon points="0,-70 45,-22 0,-22" />
-      <polygon points="0,-22 38,10 0,10" />
-      <line x1="0" y1="-70" x2="-40" y2="-30" stroke="rgba(120,85,20,1)" strokeWidth="2" />
-      <polygon points="0,-65 -40,-30 0,-30" />
-    </g>
-
-    {/* Sailing ship in Paradise */}
-    <g transform="translate(2000,1750)" opacity="0.20" fill="rgba(100,70,15,1)">
-      <ellipse cx="0" cy="18" rx="50" ry="14" />
-      <line x1="0" y1="-65" x2="0" y2="18" stroke="rgba(100,70,15,1)" strokeWidth="3" />
-      <polygon points="0,-65 42,-20 0,-20" />
-      <polygon points="0,-20 35,10 0,10" />
-    </g>
-
-    {/* Sailing ship in New World */}
-    <g transform="translate(3400,1750)" opacity="0.18" fill="rgba(80,55,10,1)">
-      <ellipse cx="0" cy="18" rx="55" ry="15" />
-      <line x1="0" y1="-70" x2="0" y2="18" stroke="rgba(80,55,10,1)" strokeWidth="3" />
-      <polygon points="0,-70 45,-22 0,-22" />
-      <polygon points="0,-22 38,10 0,10" />
-    </g>
-
-    {/* Sea king silhouette in South Blue */}
-    <g opacity="0.14" fill="rgba(30,55,100,1)">
-      <ellipse cx="680"  cy="1900" rx="120" ry="45" />
-      <ellipse cx="760"  cy="1870" rx="55"  ry="32" />
-      <ellipse cx="820"  cy="1855" rx="30"  ry="20" />
-      {/* Fins */}
-      <path d="M 580,1900 Q 560,1830 610,1850 Z" />
-      <path d="M 780,1900 Q 820,1840 790,1870 Z" />
-    </g>
-
-    {/* Sea king in New World */}
-    <g opacity="0.12" fill="rgba(60,20,80,1)">
-      <ellipse cx="3650" cy="800"  rx="130" ry="50" />
-      <ellipse cx="3740" cy="768"  rx="60"  ry="35" />
-      <path d="M 3550,800 Q 3525,730 3580,755 Z" />
-    </g>
-
-    {/* Kraken tentacle in deep Calm Belt */}
-    <g opacity="0.13" fill="rgba(25,15,50,1)">
-      <path d="M 1800,1150 Q 1820,1100 1840,1140 Q 1860,1180 1850,1220 Q 1840,1260 1820,1240 Z" />
-      <path d="M 1860,1120 Q 1890,1070 1905,1110 Q 1920,1150 1905,1190 Q 1890,1230 1875,1210 Z" />
-      <path d="M 1920,1160 Q 1940,1110 1960,1145 Q 1975,1180 1960,1218 Z" />
-    </g>
-
-    {/* ══════════════════════════════════════════
-        LAYER 9 — NAVIGATION LINES (pirate routes)
-    ══════════════════════════════════════════ */}
-    {/* Dotted nautical lines across the open seas */}
-    {[350, 750, 1550, 1900].map((y, i) => (
-      <line key={i}
-        x1="50" y1={y} x2={MAP_W - 50} y2={y}
-        stroke="rgba(140,100,20,0.08)" strokeWidth="1.5"
-        strokeDasharray="12,18" />
-    ))}
-
-    {/* ══════════════════════════════════════════
-        LAYER 10 — LABELS (high visibility)
-    ══════════════════════════════════════════ */}
-
-    {/*  Sea names  */}
-    <text x="540" y="1800" textAnchor="middle" fontFamily="Cinzel" fontSize="32" fontWeight="700"
-          fill="#4FC3F7"
-          stroke="rgba(2,6,20,0.92)" strokeWidth="7" paintOrder="stroke fill"
-          letterSpacing="5">EAST BLUE</text>
-
-    <text x="540" y="215" textAnchor="middle" fontFamily="Cinzel" fontSize="25" fontWeight="600"
-          fill="#4FC3F7"
-          stroke="rgba(2,6,20,0.92)" strokeWidth="6" paintOrder="stroke fill"
-          letterSpacing="4">NORTH BLUE</text>
-
-    <text x="540" y="2060" textAnchor="middle" fontFamily="Cinzel" fontSize="25" fontWeight="600"
-          fill="#4FC3F7"
-          stroke="rgba(2,6,20,0.92)" strokeWidth="6" paintOrder="stroke fill"
-          letterSpacing="4">SOUTH BLUE</text>
-
-    <text x="3460" y="2060" textAnchor="middle" fontFamily="Cinzel" fontSize="25" fontWeight="600"
-          fill="#4FC3F7"
-          stroke="rgba(2,6,20,0.92)" strokeWidth="6" paintOrder="stroke fill"
-          letterSpacing="4">WEST BLUE</text>
-
-    {/* Grand Line */}
-    <text x="2000" y={GL_Y - 8} textAnchor="middle" fontFamily="Cinzel" fontSize="18" fontWeight="700"
-          fill="#F0B429"
-          stroke="rgba(2,6,20,0.95)" strokeWidth="6" paintOrder="stroke fill"
-          letterSpacing="7" filter="url(#textGlow)">
-      ✦  THE  GRAND  LINE  ✦
-    </text>
-
-    {/* Calm Belt labels */}
-    <text x="2000" y={CALM_N + 96} textAnchor="middle" fontFamily="Cinzel" fontSize="14" fontWeight="600"
-          fill="#9898D8"
-          stroke="rgba(2,5,20,0.95)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="4">· · · CALM BELT · · ·</text>
-
-    <text x="2000" y={GL_Y + 122} textAnchor="middle" fontFamily="Cinzel" fontSize="14" fontWeight="600"
-          fill="#9898D8"
-          stroke="rgba(2,5,20,0.95)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="4">· · · CALM BELT · · ·</text>
-
-    {/* Region labels */}
-    <text x="2000" y="595" textAnchor="middle" fontFamily="Cinzel" fontSize="28" fontWeight="700"
-          fill="#CE93D8"
-          stroke="rgba(2,5,20,0.92)" strokeWidth="7" paintOrder="stroke fill"
-          letterSpacing="6">PARADISE</text>
-
-    <text x="3460" y="595" textAnchor="middle" fontFamily="Cinzel" fontSize="28" fontWeight="700"
-          fill="#FF7043"
-          stroke="rgba(2,5,20,0.92)" strokeWidth="7" paintOrder="stroke fill"
-          letterSpacing="6">NEW WORLD</text>
-
-    {/* Sky World */}
-    <text x="2000" y="130" textAnchor="middle" fontFamily="Cinzel" fontSize="17" fontWeight="600"
-          fill="#D4AAFF"
-          stroke="rgba(2,5,20,0.92)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="5">✦ · SKY WORLD · ✦</text>
-
-    {/* Red Line labels — vertical */}
-    <text x={RL1_X} y="620" textAnchor="middle" fontFamily="Cinzel" fontSize="12" fontWeight="700"
-          fill="#FF7043"
-          stroke="rgba(2,5,20,0.95)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="2" transform={`rotate(-90,${RL1_X},620)`}>RED LINE</text>
-
-    <text x={RL2_X} y="620" textAnchor="middle" fontFamily="Cinzel" fontSize="12" fontWeight="700"
-          fill="#FF7043"
-          stroke="rgba(2,5,20,0.95)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="2" transform={`rotate(-90,${RL2_X},620)`}>RED LINE</text>
-
-    {/* Named location hints */}
-    <text x="2940" y="1900" textAnchor="middle" fontFamily="Cinzel" fontSize="13" fontWeight="600"
-          fill="#26C6DA"
-          stroke="rgba(2,5,20,0.95)" strokeWidth="5" paintOrder="stroke fill"
-          letterSpacing="2">FISHMAN ISLAND</text>
-
-    {/* ══════════════════════════════════════════
-        LAYER 11 — VIGNETTE + EFFECTS
-    ══════════════════════════════════════════ */}
-    <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="url(#vignette)" />
-
-    {/* ══════════════════════════════════════════
-        LAYER 12 — ORNATE COMPASS ROSE
-    ══════════════════════════════════════════ */}
-    <g transform="translate(3870, 2090)" opacity="0.88">
-      {/* Outer ring decorations */}
-      <circle r="80"  fill="none" stroke="rgba(200,150,20,0.35)" strokeWidth="1.5" />
-      <circle r="62"  fill="none" stroke="rgba(200,150,20,0.25)" strokeWidth="1"   />
-      <circle r="8"   fill="rgba(240,190,45,0.95)" />
-      <circle r="4"   fill="rgba(255,230,120,1)"   />
-
-      {/* 8-point star */}
-      {[0,45,90,135,180,225,270,315].map(angle => (
-        <g key={angle} transform={`rotate(${angle})`}>
-          <path d="M 0,0 L 5,30 L 0,75 L -5,30 Z"
-                fill={angle % 90 === 0 ? "rgba(240,190,45,0.92)" : "rgba(180,140,25,0.65)"} />
+      {/* Corner decorations */}
+      {[[55,55],[MAP_W-55,55],[MAP_W-55,MAP_H-55],[55,MAP_H-55]].map(([cx,cy],i) => (
+        <g key={i}>
+          <circle cx={cx} cy={cy} r="12" fill={C.parch}
+                  stroke={C.border} strokeWidth="2.5" />
+          <circle cx={cx} cy={cy} r="5"  fill={C.gold} />
         </g>
       ))}
 
-      {/* Cardinal tick marks */}
-      {Array.from({ length: 32 }).map((_, i) => (
-        <line key={i}
-          x1="0" y1={i % 8 === 0 ? -56 : i % 4 === 0 ? -58 : -60}
-          x2="0" y2="-64"
-          stroke="rgba(200,150,20,0.45)" strokeWidth={i % 8 === 0 ? 2 : 1}
-          transform={`rotate(${i * 11.25})`} />
-      ))}
+      {/* RL labels on outer paper border — vertical */}
+      <text x="12" y={MAP_H / 2} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="20" fontWeight="800"
+            fill={C.label} letterSpacing="3"
+            transform={`rotate(-90,12,${MAP_H/2})`}>
+        RED LINE
+      </text>
+      <text x={MAP_W - 12} y={MAP_H / 2} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="20" fontWeight="800"
+            fill={C.label} letterSpacing="3"
+            transform={`rotate(90,${MAP_W-12},${MAP_H/2})`}>
+        RED LINE
+      </text>
 
-      {/* N S E W labels */}
-      <text y="-88" textAnchor="middle" fontFamily="Cinzel" fontSize="20" fontWeight="700"
-            fill="rgba(240,190,45,1)"
-            stroke="rgba(0,0,0,0.9)" strokeWidth="5" paintOrder="stroke fill">N</text>
-      <text y="99"  textAnchor="middle" fontFamily="Cinzel" fontSize="18" fontWeight="600"
-            fill="rgba(220,170,35,0.92)"
-            stroke="rgba(0,0,0,0.9)" strokeWidth="5" paintOrder="stroke fill">S</text>
-      <text x="-95" y="7" textAnchor="middle" fontFamily="Cinzel" fontSize="18" fontWeight="600"
-            fill="rgba(220,170,35,0.92)"
-            stroke="rgba(0,0,0,0.9)" strokeWidth="5" paintOrder="stroke fill">W</text>
-      <text x="95"  y="7" textAnchor="middle" fontFamily="Cinzel" fontSize="18" fontWeight="600"
-            fill="rgba(220,170,35,0.92)"
-            stroke="rgba(0,0,0,0.9)" strokeWidth="5" paintOrder="stroke fill">E</text>
-    </g>
+      {/* ═══════════════════════════════════════════════
+          10. LABELS — large, clear, authentic map style
+      ═══════════════════════════════════════════════ */}
 
-    {/* ══════════════════════════════════════════
-        LAYER 13 — TITLE CARTOUCHE (top-left area)
-    ══════════════════════════════════════════ */}
-    <g transform="translate(108, 90)">
-      {/* Cartouche background */}
-      <rect x="-85" y="-38" width="170" height="70"
-            fill="rgba(10,18,45,0.75)" rx="6"
-            stroke="rgba(180,130,20,0.50)" strokeWidth="2" />
-      {/* Skull & crossbones decoration */}
-      <text x="0" y="-2" textAnchor="middle" fontSize="18">☠</text>
-      <text x="0" y="22" textAnchor="middle" fontFamily="Cinzel Decorative" fontSize="11"
-            fontWeight="700" fill="rgba(240,180,41,0.85)"
-            stroke="rgba(0,0,0,0.9)" strokeWidth="3" paintOrder="stroke fill"
-            letterSpacing="1">GRAND VOYAGE</text>
-    </g>
-  </svg>
-)
+      {/* — Sea names (in the ocean teal) — */}
+      {/* NORTH BLUE */}
+      <text x="540"  y="480" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="38" fontWeight="800"
+            fill={C.label} opacity="0.75" letterSpacing="4">
+        NORTH BLUE
+      </text>
 
-export default WorldMapSVG
+      {/* EAST BLUE */}
+      <text x="540" y="1750" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="38" fontWeight="800"
+            fill={C.label} opacity="0.75" letterSpacing="4">
+        EAST BLUE
+      </text>
+
+      {/* SOUTH BLUE */}
+      <text x="540"  y="2090" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="30" fontWeight="700"
+            fill={C.label} opacity="0.65" letterSpacing="3">
+        SOUTH BLUE
+      </text>
+
+      {/* WEST BLUE */}
+      <text x="3460" y="1640" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="36" fontWeight="800"
+            fill={C.label} opacity="0.72" letterSpacing="4">
+        WEST BLUE
+      </text>
+
+      {/* EAST BLUE (upper, separate from the sea level one) */}
+      <text x="540" y="192" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="28" fontWeight="700"
+            fill={C.label} opacity="0.60" letterSpacing="3">
+        NORTH BLUE
+      </text>
+
+      {/* — Grand Line zone labels — */}
+      {/* GRAND LINE / PARADISE (right half between RL1 and RL2) */}
+      <text x="2000" y={GL_Y - 68} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="42" fontWeight="800"
+            fill={C.label} opacity="0.85" letterSpacing="3">
+        GRAND LINE
+      </text>
+      <text x="2000" y={GL_Y + 92} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="36" fontWeight="700"
+            fill={C.label} opacity="0.78" letterSpacing="4">
+        PARADISE
+      </text>
+
+      {/* GRAND LINE / NEW WORLD (right of RL2) */}
+      <text x="3460" y={GL_Y - 68} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="36" fontWeight="800"
+            fill={C.label} opacity="0.80" letterSpacing="3">
+        GRAND LINE
+      </text>
+      <text x="3460" y={GL_Y + 88} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="32" fontWeight="700"
+            fill={C.label} opacity="0.75" letterSpacing="3">
+        NEW WORLD
+      </text>
+
+      {/* — Calm Belt labels — */}
+      <text x="2000" y={CALM_N + (GL_Y - CALM_N) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="22" fontWeight="700"
+            fill="rgba(255,255,255,0.72)" letterSpacing="6">
+        CALM BELT
+      </text>
+      <text x="2000" y={GL_Y + (CALM_S - GL_Y) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="22" fontWeight="700"
+            fill="rgba(255,255,255,0.72)" letterSpacing="6">
+        CALM BELT
+      </text>
+      {/* Calm belt labels repeated for East Blue side */}
+      <text x="540"  y={CALM_N + (GL_Y - CALM_N) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="18" fontWeight="600"
+            fill="rgba(255,255,255,0.60)" letterSpacing="4">
+        CALM BELT
+      </text>
+      <text x="540"  y={GL_Y + (CALM_S - GL_Y) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="18" fontWeight="600"
+            fill="rgba(255,255,255,0.60)" letterSpacing="4">
+        CALM BELT
+      </text>
+      <text x="3460" y={CALM_N + (GL_Y - CALM_N) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="18" fontWeight="600"
+            fill="rgba(255,255,255,0.60)" letterSpacing="4">
+        CALM BELT
+      </text>
+      <text x="3460" y={GL_Y + (CALM_S - GL_Y) / 2 + 7} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="18" fontWeight="600"
+            fill="rgba(255,255,255,0.60)" letterSpacing="4">
+        CALM BELT
+      </text>
+
+      {/* REVERSE MOUNTAIN label */}
+      <text x={RL1_X + 90} y={GL_Y - 22} textAnchor="start"
+            fontFamily="Cinzel" fontSize="14" fontWeight="600"
+            fill={C.label} opacity="0.80" letterSpacing="1">
+        REVERSE MOUNTAIN
+      </text>
+
+      {/* Sky world label */}
+      <text x="1900" y="120" textAnchor="middle"
+            fontFamily="Cinzel" fontSize="18" fontWeight="600"
+            fill={C.label} opacity="0.55" letterSpacing="4">
+        · SKY ISLAND ·
+      </text>
+
+      {/* ═══════════════════════════════════════════════
+          11. ONE PIECE LOGO / TITLE BANNER (top center)
+      ═══════════════════════════════════════════════ */}
+      <g transform={`translate(${MAP_W / 2}, 0)`}>
+        {/* Banner background */}
+        <rect x="-210" y="0" width="420" height="42"
+              fill="#2A1408" rx="0 0 8 8" />
+        <rect x="-205" y="2" width="410" height="38"
+              fill="#3C1E08" rx="0 0 6 6" />
+        {/* Skull icons */}
+        <text x="-170" y="30" textAnchor="middle" fontSize="20" fill={C.gold} opacity="0.85">☠</text>
+        <text x="170"  y="30" textAnchor="middle" fontSize="20" fill={C.gold} opacity="0.85">☠</text>
+        {/* Title text */}
+        <text y="30" textAnchor="middle"
+              fontFamily="Cinzel Decorative" fontSize="20" fontWeight="900"
+              fill={C.gold} letterSpacing="2">
+          ONE PIECE
+        </text>
+        <text y="42" textAnchor="middle"
+              fontFamily="Cinzel" fontSize="9" fontWeight="600"
+              fill="rgba(200,150,30,0.75)" letterSpacing="4">
+          WORLD MAP
+        </text>
+        {/* Decorative lines */}
+        <line x1="-205" y1="40" x2="-100" y2="40" stroke={C.gold} strokeWidth="1" opacity="0.5" />
+        <line x1="100"  y1="40" x2="205"  y2="40" stroke={C.gold} strokeWidth="1" opacity="0.5" />
+      </g>
+
+      {/* ═══════════════════════════════════════════════
+          12. COMPASS ROSE (bottom-right, on parchment)
+      ═══════════════════════════════════════════════ */}
+      <g transform={`translate(${MAP_W - 110}, ${MAP_H - 100})`}>
+        {/* Background circle */}
+        <circle r="58" fill={C.parch} stroke={C.border} strokeWidth="2" />
+        <circle r="46" fill="none"    stroke={C.border} strokeWidth="1" opacity="0.5" />
+
+        {/* 8-point rose */}
+        {[0,45,90,135,180,225,270,315].map(angle => (
+          <g key={angle} transform={`rotate(${angle})`}>
+            <polygon
+              points="0,-45 4,-18 0,0 -4,-18"
+              fill={angle % 90 === 0 ? C.label : C.parchSh}
+              opacity={angle % 90 === 0 ? 0.92 : 0.65}
+            />
+          </g>
+        ))}
+
+        {/* Center */}
+        <circle r="6" fill={C.label} />
+        <circle r="3" fill={C.gold}  />
+
+        {/* Cardinal labels */}
+        <text y="-52" textAnchor="middle" fontFamily="Cinzel" fontSize="14" fontWeight="800"
+              fill={C.label}>N</text>
+        <text y="62"  textAnchor="middle" fontFamily="Cinzel" fontSize="12" fontWeight="700"
+              fill={C.label} opacity="0.85">S</text>
+        <text x="-60" y="5"  textAnchor="middle" fontFamily="Cinzel" fontSize="12" fontWeight="700"
+              fill={C.label} opacity="0.85">W</text>
+        <text x="60"  y="5"  textAnchor="middle" fontFamily="Cinzel" fontSize="12" fontWeight="700"
+              fill={C.label} opacity="0.85">E</text>
+      </g>
+
+      {/* N (north indicator) small in bottom-right corner paper */}
+      <text x={MAP_W - 42} y={MAP_H - 15} textAnchor="middle"
+            fontFamily="Cinzel" fontSize="10" fill={C.border} opacity="0.7">N</text>
+    </svg>
+  )
+}
