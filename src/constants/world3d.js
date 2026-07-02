@@ -24,6 +24,10 @@ export const locTo3D = (loc) => [
   (loc.y / 100 - 0.5) * WORLD_H,
 ]
 
+// Sun direction shared by the Sky, the directional light, and the
+// water shader's specular term — they must all agree
+export const SUN_POSITION = [100, 45, -120]
+
 export const SAGA_COLORS = {
   'East Blue':      '#4A90D9',
   'Alabasta':       '#C97B2F',
