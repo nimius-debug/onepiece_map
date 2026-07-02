@@ -2,6 +2,7 @@
 import { useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import { terrainHeight } from '../../terrain/heightfield'
 
 /*
   CameraRig drives two behaviors on top of OrbitControls:
@@ -30,15 +31,10 @@ const CameraRig = ({ controlsRef, focusGoalRef, followingRef, followRef }) => {
         tmpCam.current.copy(controls.target).addScaledVector(dir, THREE.MathUtils.clamp(dist, 12, 70))
         camera.position.lerp(tmpCam.current, ease)
       }
-      // stay above the Red Line walls while chasing
-      if (camera.position.y < 18) {
-        camera.position.y += (18 - camera.position.y) * ease
-      }
       controls.update()
-      return
     }
 
-    const goal = focusGoalRef.current
+    const goal = followingRef.current ? null : focusGoalRef.current
     if (goal) {
       tmpTarget.current.set(...goal.target)
       tmpCam.current.set(...goal.camPos)
@@ -51,6 +47,13 @@ const CameraRig = ({ controlsRef, focusGoalRef, followingRef, followRef }) => {
       ) {
         focusGoalRef.current = null
       }
+    }
+
+    // never let the camera go inside terrain (Red Line ridges especially)
+    const ground = terrainHeight(camera.position.x, camera.position.z) + 5
+    if (camera.position.y < ground) {
+      camera.position.y += (ground - camera.position.y) * Math.min(1, ease * 3)
+      controls.update()
     }
   })
 

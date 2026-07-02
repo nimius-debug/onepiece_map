@@ -1,13 +1,17 @@
 import { Suspense, useMemo, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Sky, Stars } from '@react-three/drei'
-import Ocean, { RedLineWalls } from './three/Ocean'
+import { OrbitControls, Sky } from '@react-three/drei'
+import Terrain, { MaryGeoise } from './three/Terrain'
+import Water from './three/Water'
 import Island from './three/Island'
 import PirateShip from './three/PirateShip'
 import JourneyRoute from './three/JourneyRoute'
 import CameraRig from './three/CameraRig'
 import SeaLabels from './three/SeaLabels'
-import { locTo3D } from '../constants/world3d'
+import Vegetation from './three/Vegetation'
+import CloudsLayer from './three/CloudsLayer'
+import { SKY_ISLANDS, SUN_POSITION } from '../constants/world3d'
+import { locAnchor, seekWater } from '../terrain/heightfield'
 
 const overlayBtn = {
   padding: '10px 18px',
@@ -48,10 +52,17 @@ const Map3DView = ({
     [visibleLocations],
   )
 
-  const waypoints = useMemo(
-    () => sortedRoute.map((loc) => locTo3D(loc)),
-    [sortedRoute],
-  )
+  // The ship sails harbor-to-harbor: each waypoint is pushed from the
+  // island's center out to its coast, toward the neighboring stop
+  const waypoints = useMemo(() => {
+    const anchors = sortedRoute.map((loc) => locAnchor(loc))
+    return anchors.map(([x, , z], i) => {
+      const [nx, , nz] = anchors[i + 1] ?? anchors[i - 1] ?? [x + 1, 0, z]
+      const toward = anchors[i + 1] ? [nx - x, nz - z] : [x - nx, z - nz]
+      const [hx, hz] = seekWater(x, z, toward[0], toward[1])
+      return [hx, 0, hz]
+    })
+  }, [sortedRoute])
 
   const startVoyage = () => {
     setVoyage(true)
@@ -66,54 +77,62 @@ const Map3DView = ({
     setApproaching(null)
   }
 
-  const handleFlyTo = ([x, y, z], size) => {
+  const handleFlyTo = ([x, y, z], location) => {
     if (voyage) return
     followingRef.current = false
-    const isSky = y > 1
+    const isSky = SKY_ISLANDS.has(location.id)
     focusGoalRef.current = {
-      target: [x, y + size, z],
-      camPos: [x + size * 4 + 8, y + size * 3 + (isSky ? 4 : 10), z + size * 4 + 8],
+      target: [x, y + 3, z],
+      camPos: [x + 22, y + (isSky ? 8 : 16), z + 22],
     }
   }
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
       <Canvas
-        shadows
-        camera={{ position: [0, 120, 160], fov: 50, near: 0.5, far: 1200 }}
+        shadows="soft"
+        camera={{ position: [0, 130, 170], fov: 50, near: 0.5, far: 1500 }}
+        gl={{ toneMappingExposure: 1.15 }}
         onPointerMissed={onClosePin}
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
-          {/* Sky & atmosphere */}
+          {/* Sky & atmosphere — warm mid-afternoon */}
           <Sky
-            distance={800}
-            sunPosition={[120, 60, -80]}
-            turbidity={6}
-            rayleigh={0.6}
-            mieCoefficient={0.02}
-            mieDirectionalG={0.85}
+            distance={4000}
+            sunPosition={SUN_POSITION}
+            turbidity={7}
+            rayleigh={1.4}
+            mieCoefficient={0.004}
+            mieDirectionalG={0.94}
           />
-          <Stars radius={500} depth={60} count={1200} factor={4} fade speed={0.4} />
-          <fog attach="fog" args={['#8FCADB', 220, 620]} />
+          <fog attach="fog" args={['#BCD6E2', 300, 950]} />
 
-          {/* Lighting */}
-          <ambientLight intensity={0.7} />
+          {/* Lighting — directional must track SUN_POSITION (water specular
+              and the Sky's sun disk both depend on it) */}
+          <ambientLight intensity={0.25} />
           <directionalLight
-            position={[120, 140, -60]}
-            intensity={1.6}
+            color="#FFE7C4"
+            intensity={2.4}
+            position={SUN_POSITION.map((v) => v * 1.5)}
             castShadow
             shadow-mapSize={[2048, 2048]}
-            shadow-camera-left={-220}
-            shadow-camera-right={220}
-            shadow-camera-top={140}
-            shadow-camera-bottom={-140}
+            shadow-camera-left={-210}
+            shadow-camera-right={210}
+            shadow-camera-top={120}
+            shadow-camera-bottom={-120}
+            shadow-camera-far={800}
+            shadow-bias={-0.0004}
+            shadow-normalBias={2}
           />
-          <hemisphereLight args={['#BFE8F5', '#1A6E85', 0.5]} />
+          <hemisphereLight args={['#BFD9EA', '#3E5C46', 0.6]} />
 
           {/* World */}
-          <Ocean />
-          <RedLineWalls />
+          <Terrain />
+          <Water />
+          <MaryGeoise />
+          <Vegetation />
+          <CloudsLayer />
           <SeaLabels />
           <JourneyRoute waypoints={waypoints} activeSaga={activeSaga} />
 
@@ -150,7 +169,7 @@ const Map3DView = ({
             ref={controlsRef}
             enableDamping
             dampingFactor={0.08}
-            minDistance={10}
+            minDistance={8}
             maxDistance={420}
             maxPolarAngle={Math.PI / 2.15}
             onStart={() => { focusGoalRef.current = null }}
@@ -195,7 +214,7 @@ const Map3DView = ({
       {/* Controls hint */}
       <div style={{
         position: 'absolute', bottom: 14, left: '50%', transform: 'translateX(-50%)',
-        fontSize: 11, color: 'rgba(245,235,216,0.75)', fontFamily: 'Cinzel, serif',
+        fontSize: 11, color: 'rgba(245,235,216,0.85)', fontFamily: 'Cinzel, serif',
         letterSpacing: '1px', pointerEvents: 'none', whiteSpace: 'nowrap', zIndex: 20,
         textShadow: '0 1px 4px rgba(0,0,0,0.6)',
       }}>

@@ -3,16 +3,21 @@ import { useFrame } from '@react-three/fiber'
 import { Line } from '@react-three/drei'
 import * as THREE from 'three'
 import { SAGA_COLORS } from '../../constants/world3d'
+import { terrainHeight } from '../../terrain/heightfield'
 
-// Animated dashed route over the water connecting the saga's islands in order
+// Animated dashed route connecting the saga's islands in order,
+// draped over the terrain where it crosses land
 const JourneyRoute = ({ waypoints, activeSaga }) => {
   const lineRef = useRef(null)
 
   const points = useMemo(() => {
     if (!waypoints || waypoints.length < 2) return null
-    const pts = waypoints.map(([x, , z]) => new THREE.Vector3(x, 1.4, z))
+    const pts = waypoints.map(([x, , z]) => new THREE.Vector3(x, 0, z))
     const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.5)
-    return curve.getPoints(Math.max(80, waypoints.length * 14))
+    return curve.getPoints(Math.max(80, waypoints.length * 14)).map((p) => {
+      p.y = Math.max(1.4, terrainHeight(p.x, p.z) + 1.2)
+      return p
+    })
   }, [waypoints])
 
   useFrame((_, dt) => {
@@ -36,6 +41,8 @@ const JourneyRoute = ({ waypoints, activeSaga }) => {
       gapSize={1.6}
       transparent
       opacity={0.85}
+      renderOrder={2}
+      depthWrite={false}
     />
   )
 }
