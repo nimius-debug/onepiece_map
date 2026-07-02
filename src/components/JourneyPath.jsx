@@ -38,6 +38,7 @@ const JourneyPath = ({ locations, activeSaga }) => {
   const pathD  = buildPath(sorted)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset to retrigger the draw-on animation
     setDrawn(false)
     const t = setTimeout(() => setDrawn(true), 120)
     return () => clearTimeout(t)
