@@ -17,9 +17,6 @@ const C = {
   gold:     '#C07810',   // accent gold
 }
 
-/* ─── Helpers ──────────────────────────────────────────────── */
-const px = (x, y) => `${x},${y}`
-
 export default function WorldMapSVG() {
   return (
     <svg
